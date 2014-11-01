@@ -1,6 +1,6 @@
 /*!
  * gulp
- * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache connect del --save-dev
+ * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache connect del gulp-open --save-dev
  */
 
 // http://markgoodyear.com/2014/01/getting-started-with-gulp/
@@ -17,8 +17,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
-    livereload = require('gulp-livereload'),
     connect = require('gulp-connect'),
+    open = require('gulp-open'),
     del = require('del');
 
 // Styles
@@ -30,6 +30,7 @@ gulp.task('styles', function() {
     .pipe(rename({ suffix: '.min' }))
     .pipe(minifycss())
     .pipe(gulp.dest('dist/styles'))
+    .pipe(connect.reload())
     .pipe(notify({ message: 'Styles task complete' }));
 });
 
@@ -43,6 +44,7 @@ gulp.task('scripts', function() {
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts'))
+    .pipe(connect.reload())
     .pipe(notify({ message: 'Scripts task complete' }));
 });
 
@@ -51,6 +53,7 @@ gulp.task('images', function() {
   return gulp.src('src/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
     .pipe(gulp.dest('dist/images'))
+    .pipe(connect.reload())
     .pipe(notify({ message: 'Images task complete' }));
 });
 
@@ -67,12 +70,15 @@ gulp.task('watch', function() {
 });
 
 gulp.task('connect', ['styles', 'scripts', 'images', 'watch'], function() {
-    connect.server();
-    // Create LiveReload server
-    livereload.listen();
+    connect.server({
+        livereload: true,
+        port: 8080
+    });
 
-    // Watch any files in dist/, reload on change
-    gulp.watch(['dist/**']).on('change', livereload.changed);
+    gulp.src('./index.html')
+      .pipe(open('', {
+        url : 'http://localhost:8080/examples/location-history/index.html'
+      }));
 });
 
 // Default task

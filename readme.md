@@ -16,7 +16,7 @@ Refrences
 
     npm install gulp -g
     npm install gulp --save-dev
-    npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache del connect --save-dev
+    npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache del connect  gulp-open --save-dev
     gulp connect
 
 ---
