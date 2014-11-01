@@ -1,6 +1,7 @@
 doc
 node_modules
 public
+dist
 *~
 *.synctex.gz
 *.aux
@@ -8,3 +9,4 @@ public
 *.bbl
 *.blg
 .DS_Store
+.sass-cache
