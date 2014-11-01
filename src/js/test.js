@@ -1,1 +1,1 @@
-document.write('Hello world from test.js!');
+console.log('Hello world from test.js!');

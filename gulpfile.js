@@ -1,6 +1,6 @@
 /*!
  * gulp
- * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache del --save-dev
+ * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-livereload gulp-cache connect del --save-dev
  */
 
 // http://markgoodyear.com/2014/01/getting-started-with-gulp/
@@ -18,6 +18,7 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
     livereload = require('gulp-livereload'),
+    connect = require('gulp-connect'),
     del = require('del');
 
 // Styles
@@ -58,27 +59,23 @@ gulp.task('clean', function(cb) {
     del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
 });
 
+// Watch
+gulp.task('watch', function() {
+  gulp.watch('src/styles/**/*.scss', ['styles']);
+  gulp.watch('src/js/**/*.js', ['scripts']);
+  gulp.watch('src/images/**/*', ['images']);
+});
+
+gulp.task('connect', ['styles', 'scripts', 'images', 'watch'], function() {
+    connect.server();
+    // Create LiveReload server
+    livereload.listen();
+
+    // Watch any files in dist/, reload on change
+    gulp.watch(['dist/**']).on('change', livereload.changed);
+});
+
 // Default task
 gulp.task('default', ['clean'], function() {
     gulp.start('styles', 'scripts', 'images');
-});
-
-// Watch
-gulp.task('watch', function() {
-
-  // Watch .scss files
-  gulp.watch('src/styles/**/*.scss', ['styles']);
-
-  // Watch .js files
-  gulp.watch('src/js/**/*.js', ['scripts']);
-
-  // Watch image files
-  gulp.watch('src/images/**/*', ['images']);
-
-  // Create LiveReload server
-  livereload.listen();
-
-  // Watch any files in dist/, reload on change
-  gulp.watch(['dist/**']).on('change', livereload.changed);
-
 });
