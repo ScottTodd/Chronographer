@@ -1,6 +1,6 @@
 /*!
  * gulp
- * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache connect del gulp-open --save-dev
+ * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat gulp-browserify gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache connect del gulp-open --save-dev
  */
 
 // http://markgoodyear.com/2014/01/getting-started-with-gulp/
@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     minifycss = require('gulp-minify-css'),
     jshint = require('gulp-jshint'),
+    browserify = require('gulp-browserify'),
     uglify = require('gulp-uglify'),
     imagemin = require('gulp-imagemin'),
     rename = require('gulp-rename'),
@@ -39,6 +40,7 @@ gulp.task('scripts', function() {
   return gulp.src('src/js/**/*.js')
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
+    .pipe(browserify())
     .pipe(concat('main.js'))
     .pipe(gulp.dest('dist/scripts'))
     .pipe(rename({ suffix: '.min' }))

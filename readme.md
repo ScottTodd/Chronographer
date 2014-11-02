@@ -11,6 +11,7 @@
 Refrences
 * [Getting started with gulp](http://markgoodyear.com/2014/01/getting-started-with-gulp/)
 * [LiveReload and web server](https://www.youtube.com/watch?v=KURMrW-HsY4)
+* [Untangle Your JavaScript with Browserify](http://lincolnloop.com/blog/untangle-your-javascript-browserify/)
 
 ---
 
