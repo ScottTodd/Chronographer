@@ -84,6 +84,9 @@ gulp.task('connect', ['styles', 'scripts', 'images', 'watch'], function() {
 });
 
 // Default task
-gulp.task('default', ['clean'], function() {
+gulp.task('default', ['clean', 'connect']);
+
+// Build once task
+gulp.task('once', ['clean'], function() {
     gulp.start('styles', 'scripts', 'images');
 });
