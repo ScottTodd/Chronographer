@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 console.log('Hello world from test.js!');
 
@@ -30,7 +30,7 @@ window.onload = function() {
 
     renderer.render( scene, camera );
 
-    d3.select("body").transition()
-        .style("background-color", "black")
+    d3.select('body').transition()
+        .style('background-color', 'black')
         .duration(5000);
 };
