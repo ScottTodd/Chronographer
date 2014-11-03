@@ -1,3 +1,5 @@
 var Chronographer = require('./Chronographer');
+var WorldMap = require('./WorldMap');
 
-window.Chronographer = Chronographer.Chronographer;
+window.Chronographer = Chronographer;
+window.Chronographer.WorldMap = WorldMap;

@@ -7,16 +7,20 @@
   <link rel='stylesheet' type='text/css' href='../../dist/styles/main.css'>
 
   <script src='../../third_party/d3.min.js'></script>
+  <script src='../../third_party/topojson.v1.min.js'></script>
   <script src='../../third_party/three.min.js'></script>
   <script src='../../dist/scripts/main.js'></script>
 </head>
 
 <body>
 
-<div>Hello world from index.html!</div>
+<div id='container'></div>
 
 <script>
-  var chronographer = new Chronographer();
+  window.onload = function() {
+    var container = document.getElementById('container');
+    var chronographer = new Chronographer(container, '', 'data/us.json');
+  }
 </script>
 
 </body>
