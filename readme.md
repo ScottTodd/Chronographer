@@ -1,8 +1,10 @@
 ## Chronographer ##
 
-### Getting Started ###
+Geographic history visualizer.
 
-Refrences
+### Development Setup ###
+
+#### References ####
 * [gulp](http://gulpjs.com/)
 * [LiveReload](http://livereload.com/)
 * [gulp-connect](https://github.com/AveVlad/gulp-connect)
@@ -11,11 +13,8 @@ Refrences
 * [Untangle Your JavaScript with Browserify](http://lincolnloop.com/blog/untangle-your-javascript-browserify/)
 * [gulp + browserify, the gulp-y way](https://medium.com/@sogko/gulp-browserify-the-gulp-y-way-bb359b3f9623)
 
+#### Building ####
 ---
-
-    npm install gulp -g
-    npm install gulp --save-dev
-    npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat browserify vinyl-transform gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache connect del gulp-open --save-dev
+    npm install
     gulp
-
 ---
