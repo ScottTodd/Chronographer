@@ -40,15 +40,14 @@ gulp.task('styles', function() {
 // Scripts
 gulp.task('scripts', function() {
   var browserified = transform(function(filename) {
-    var b = browserify(filename);
+    var b = browserify([filename], {debug: true});
     return b.bundle();
   });
 
-  return gulp.src(['src/js/**/*.js'])
+  return gulp.src(['src/js/main.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
     .pipe(browserified)
-    .pipe(concat('main.js'))
     .pipe(gulp.dest('dist/scripts'))
     .pipe(rename({ suffix: '.min' }))
     .pipe(uglify())

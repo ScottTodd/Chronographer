@@ -117,6 +117,6 @@ var ChronoData = function(container, dataURL) {
 
 ChronoData.prototype.update = function() {
     this.renderer.render(this.scene, this.camera);
-}
+};
 
 module.exports = ChronoData;
