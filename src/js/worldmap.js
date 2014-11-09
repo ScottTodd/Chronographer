@@ -1,5 +1,6 @@
 'use strict';
 
+
 var WorldMap = function(container, mapData) {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
@@ -10,6 +11,11 @@ var WorldMap = function(container, mapData) {
       .clipAngle(90)
       .rotate([40, -20])
       .precision(0.1);
+
+    // this.projection = d3.geo.mercator()
+    //   .scale((this.width + 1) / 2 / Math.PI)
+    //   .translate([this.width / 2, this.height / 2])
+    //   .precision(0.1);
 
     var zoom = d3.behavior.zoom()
       .translate(this.projection.translate())
@@ -28,12 +34,14 @@ var WorldMap = function(container, mapData) {
     d3.json(mapData, this.getData.bind(this));
 };
 
+
 WorldMap.prototype.getData = function(error, world) {
     this.land = topojson.feature(world, world.objects.land);
     this.context = this.canvas.node().getContext('2d');
 
     this.drawMap();
 };
+
 
 WorldMap.prototype.drawMap = function() {
     this.context.strokeStyle = '#E1D6C1';
@@ -43,5 +51,6 @@ WorldMap.prototype.drawMap = function() {
     this.context.fill();
     this.context.stroke();
 };
+
 
 module.exports = WorldMap;
