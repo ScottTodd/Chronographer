@@ -9,6 +9,7 @@
   <script src='../../third_party/d3.min.js'></script>
   <script src='../../third_party/topojson.v1.min.js'></script>
   <script src='../../third_party/three.min.js'></script>
+  <script src='../../third_party/stats.min.js'></script>
   <script src='../../dist/scripts/main.js'></script>
 </head>
 
@@ -17,10 +18,30 @@
 <div id='container'></div>
 
 <script>
+  var chronographer;
+  var container;
+
   window.onload = function() {
-    var container = document.getElementById('container');
-    var chronographer = new Chronographer(container, 'data/private/location.json', 'data/us.json');
+    init();
+    animate();
   };
+
+  function init() {
+    container = document.getElementById('container');
+    chronographer = new Chronographer(container, 'data/private/location.json', 'data/us.json');
+
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    container.appendChild(stats.domElement);
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    stats.update();
+    chronographer.update();
+  }
 </script>
 
 </body>

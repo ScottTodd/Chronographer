@@ -4,16 +4,12 @@ var WorldMap = require('./WorldMap');
 var ChronoData = require('./ChronoData');
 
 var Chronographer = function(container, data, mapData) {
-    var worldMap = new WorldMap(container, mapData);
-    var chronoData = new ChronoData(container, data);
+    this.worldMap = new WorldMap(container, mapData);
+    this.chronoData = new ChronoData(container, data);
+};
 
-    function animate(t) {
-        requestAnimationFrame(animate);
-
-        chronoData.update();
-    }
-
-    animate();
+Chronographer.prototype.update = function() {
+    this.chronoData.update();
 };
 
 module.exports = Chronographer;

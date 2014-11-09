@@ -26,7 +26,8 @@
     "gulp-webserver": "~0.8.6",
     "vinyl-transform": "0.0.1",
     "browserify": "^6.2.0",
-    "gulp-run": "^1.6.4"
+    "gulp-run": "^1.6.4",
+    "lodash": "^2.4.1"
   },
   "scripts": {
     "start": "gulp"
