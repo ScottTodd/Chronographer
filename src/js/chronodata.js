@@ -22,7 +22,7 @@ var ChronoData = function(container, dataURL, projection) {
     this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(this.renderer.domElement);
-    this.renderer.domElement.id = 'renderer';
+    this.renderer.domElement.id = 'cgr-chronoData';
 
     // effect = new THREE.StereoEffect(renderer);
     // effect.setSize(window.innerWidth, window.innerHeight);
