@@ -44,9 +44,13 @@ gulp.task('scripts', function() {
     return b.bundle();
   });
 
-  return gulp.src(['src/js/main.js'])
+  // Check code quality with jshint.
+  gulp.src(['src/js/**/*.js'])
     .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('default'));
+
+  // Browserify and uglify into dist folder.
+  return gulp.src(['src/js/main.js'])
     .pipe(browserified)
     .pipe(gulp.dest('dist/scripts'))
     .pipe(rename({ suffix: '.min' }))
