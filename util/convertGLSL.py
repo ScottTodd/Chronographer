@@ -3,7 +3,15 @@ import fnmatch
 
 # Converts shaders (.glsl files) into javascript files with exported strings.
 
-print "Running convertGLSL.py."
+# ANSI escape sequences for colors (makes console output pretty).
+HEADER = '\033[95m'
+OKBLUE = '\033[94m'
+OKGREEN = '\033[92m'
+WARNING = '\033[93m'
+FAIL = '\033[91m'
+ENDC = '\033[0m'
+
+print "\nRunning convertGLSL.py."
 
 matches = []
 for root, dirnames, filenames in os.walk('src/js'):
@@ -15,13 +23,13 @@ for match in matches:
     shader_name = os.path.splitext(os.path.basename(input_file_name))[0]
     output_file_name = input_file_name.replace('.glsl', '.js')
 
-    print 'converting shader named', shader_name
+    print HEADER + '  converting ' + ENDC + 'shader named ' + shader_name
 
     with open(input_file_name, 'r') as input_file:
-        print 'opened', input_file_name, 'as input'
+        print OKBLUE + '    opened ' + ENDC + input_file_name + ' as input'
 
         with open(output_file_name, 'w') as output_file:
-            print 'opened', output_file_name, 'as output'
+            print OKBLUE + '    opened ' + ENDC + output_file_name + ' as output'
 
             output_file.write('\'use strict\';\n\n');
             output_file.write('var ' + shader_name + ' = \'\' +\n')
@@ -33,3 +41,5 @@ for match in matches:
             output_file.write('    \'\';\n\n')
 
             output_file.write('module.exports = ' + shader_name + ';\n')
+
+print 'GLSL to JS conversion complete!\n'
