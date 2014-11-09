@@ -1,11 +1,6 @@
-/*!
- * gulp
- * $ npm install gulp-ruby-sass gulp-autoprefixer gulp-minify-css gulp-jshint gulp-concat browserify vinyl-transform gulp-uglify gulp-imagemin gulp-notify gulp-rename gulp-cache connect del gulp-open --save-dev
- */
+// starting reference: http://markgoodyear.com/2014/01/getting-started-with-gulp/
 
-// http://markgoodyear.com/2014/01/getting-started-with-gulp/
-
-// Load plugins
+// Load and alias plugins.
 var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -21,6 +16,7 @@ var gulp = require('gulp'),
     cache = require('gulp-cache'),
     connect = require('gulp-connect'),
     open = require('gulp-open'),
+    run = require('gulp-run'),
     del = require('del');
 
 // Styles
@@ -44,8 +40,11 @@ gulp.task('scripts', function() {
     return b.bundle();
   });
 
+  // Convert shaders into exported javascript strings.
+  run('python util/convertGLSL.py').exec();
+
   // Check code quality with jshint.
-  gulp.src(['src/js/**/*.js'])
+  gulp.src(['src/js/**/*.js', '!src/js/shaders/*.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'));
 
@@ -78,6 +77,7 @@ gulp.task('clean', function(cb) {
 gulp.task('watch', function() {
   gulp.watch('src/styles/**/*.scss', ['styles']);
   gulp.watch('src/js/**/*.js', ['scripts']);
+  gulp.watch('src/js/**/*.glsl', ['scripts']);
   gulp.watch('src/images/**/*', ['images']);
 });
 

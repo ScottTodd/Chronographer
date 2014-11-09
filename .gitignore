@@ -11,3 +11,5 @@ dist
 *.blg
 .DS_Store
 .sass-cache
+
+src/js/shaders/*.js

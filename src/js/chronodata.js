@@ -1,7 +1,7 @@
 'use strict';
 
-var chronodataVertexShader = require('./shaders/chronodataVertexShader');
-var chronodataFragmentShader = require('./shaders/chronodataFragmentShader');
+var chronodataVertexShader = require('./shaders/chronodataVertex');
+var chronodataFragmentShader = require('./shaders/chronodataFragment');
 
 var ChronoData = function(container, dataURL) {
     console.log('ChronoData object!');
