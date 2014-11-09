@@ -1,5 +1,8 @@
 'use strict';
 
+var chronodataVertexShader = require('./shaders/chronodataVertexShader');
+var chronodataFragmentShader = require('./shaders/chronodataFragmentShader');
+
 var ChronoData = function(container, dataURL) {
     console.log('ChronoData object!');
 
@@ -68,44 +71,44 @@ var ChronoData = function(container, dataURL) {
         times.push(timestampMs);
     }
 
-    // var attributes = {
-    //   pointTime: { type: 'f', value: times }
-    // };
+    var attributes = {
+      pointTime: { type: 'f', value: times }
+    };
 
-    // var uniforms = {
-    //   particleTexture: {
-    //     type: 't',
-    //     value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
-    //   },
-    //   highlightTime: {type: 'f', value: 1.0},
-    //   minTime: {type: 'f', value: minTime},
-    //   maxTime: {type: 'f', value: maxTime},
-    //   percentHighlightRange: {type: 'f', value: percentHighlightRange},
-    //   minAlphaScale: {type: 'f', value: minAlphaScale}
-    // };
+    var uniforms = {
+      particleTexture: {
+        type: 't',
+        value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
+      },
+      highlightTime: {type: 'f', value: 1.0},
+      minTime: {type: 'f', value: minTime},
+      maxTime: {type: 'f', value: maxTime},
+      percentHighlightRange: {type: 'f', value: 0.1},
+      minAlphaScale: {type: 'f', value: 0.1}
+    };
 
-    var material = new THREE.PointCloudMaterial({
-        color: 0xFFFFFF,
-        size: 20,
-        map: THREE.ImageUtils.loadTexture(
-            'images/circle_alpha.png'
-        ),
-        blending: THREE.AdditiveBlending,
-        transparent: true
-    });
-
-    // material = new THREE.ShaderMaterial({
-    //   attributes:     attributes,
-    //   uniforms:       uniforms,
-    //   vertexShader:   document.getElementById('vertexshader').text,
-    //   fragmentShader: document.getElementById('fragmentshader').text,
-    //   transparent:    true,
-    //   // blending:       THREE.AdditiveBlending
+    // var material = new THREE.PointCloudMaterial({
+    //     color: 0xFFFFFF,
+    //     size: 20,
+    //     map: THREE.ImageUtils.loadTexture(
+    //         'images/circle_alpha.png'
+    //     ),
+    //     blending: THREE.AdditiveBlending,
+    //     transparent: true
     // });
+
+    var material = new THREE.ShaderMaterial({
+      attributes:     attributes,
+      uniforms:       uniforms,
+      vertexShader:   chronodataVertexShader,
+      fragmentShader: chronodataFragmentShader,
+      transparent:    true,
+      blending:       THREE.AdditiveBlending
+    });
 
     var particles = new THREE.PointCloud(geometry, material);
     // particles.frustomCulled = true;
-    // particles.sortParticles = true;
+    particles.sortParticles = true;
 
     this.scene.add(particles);
 
