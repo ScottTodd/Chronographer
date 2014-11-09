@@ -1,48 +1,47 @@
 'use strict';
 
 var WorldMap = function(container, mapData) {
-    console.log('WorldMap object!');
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
 
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-
-    var projection = d3.geo.albers()
-      .scale(1070)
-      .translate([width / 2, height / 2]);
+    this.projection = d3.geo.orthographic()
+      .scale(325)
+      .translate([this.width / 2, this.height / 2])
+      .clipAngle(90)
+      .rotate([40, -20])
+      .precision(0.1);
 
     var zoom = d3.behavior.zoom()
-      .translate(projection.translate())
-      .scale(projection.scale())
-      .scaleExtent([height, 4000 * height]);
-      // .on('zoom', zoomed);
+      .translate(this.projection.translate())
+      .scale(this.projection.scale())
+      .scaleExtent([this.height, 4000 * this.height]);
 
-    var canvas = d3.select(container).append('canvas')
+    this.canvas = d3.select(container).append('canvas')
       .call(zoom)
       .attr('id', 'cgr-worldMap')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('width', this.width)
+      .attr('height', this.height);
 
-    var path = d3.geo.path()
-      .projection(projection);
+    this.path = d3.geo.path()
+      .projection(this.projection);
 
-    var states = {};
-    var context = {};
+    d3.json(mapData, this.getData.bind(this));
+};
 
-    d3.json(mapData, function(error, us) {
-        states = topojson.feature(us, us.objects.states);
-        context = canvas.node().getContext('2d');
+WorldMap.prototype.getData = function(error, world) {
+    this.land = topojson.feature(world, world.objects.land);
+    this.context = this.canvas.node().getContext('2d');
 
-        drawMap();
-    });
+    this.drawMap();
+};
 
-    function drawMap() {
-      context.strokeStyle = '#E1D6C1';
-      context.fillStyle = '#3E3733';
-      context.beginPath();
-      path.context(context)(states);
-      context.fill();
-      context.stroke();
-    }
+WorldMap.prototype.drawMap = function() {
+    this.context.strokeStyle = '#E1D6C1';
+    this.context.fillStyle = '#3E3733';
+    this.context.beginPath();
+    this.path.context(this.context)(this.land);
+    this.context.fill();
+    this.context.stroke();
 };
 
 module.exports = WorldMap;
