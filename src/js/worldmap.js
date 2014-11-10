@@ -39,7 +39,7 @@ WorldMap.prototype.getData = function(error, world) {
     this.land = topojson.feature(world, world.objects.land);
     this.context = this.canvas.node().getContext('2d');
 
-    this.drawMap();
+    // this.drawMap();
 };
 
 

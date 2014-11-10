@@ -70,7 +70,7 @@ gulp.task('images', function() {
 
 // Clean
 gulp.task('clean', function(cb) {
-    del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
+    del(['dist/scripts', 'dist/styles', 'dist/images'], cb)
 });
 
 // Watch

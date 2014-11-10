@@ -4,11 +4,9 @@ var chronodataVertexShader = require('./shaders/chronodataVertex');
 var chronodataFragmentShader = require('./shaders/chronodataFragment');
 
 
-var ChronoData = function(container, dataURL, projection) {
+var ChronoData = function(container, dataURL) {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-
-    this.projection = projection;
 
     function loadText(url) {
       var request = new XMLHttpRequest();
@@ -33,6 +31,10 @@ var ChronoData = function(container, dataURL, projection) {
       window.innerWidth / window.innerHeight, 1, 3000);
     this.camera.position.z = 622.5; // 1000.0
 
+    this.controls = new THREE.OrbitControls(this.camera,
+      this.renderer.domElement);
+    this.controls.addEventListener('change', this.render.bind(this));
+
     this.data = [];
     var times = [];
     this.geometry = new THREE.Geometry();
@@ -51,26 +53,22 @@ var ChronoData = function(container, dataURL, projection) {
         var latitude = locations[i].latitudeE7 / 10000000.0;
         var longitude = locations[i].longitudeE7 / 10000000.0;
 
-        var screenCoordinates = this.projection([longitude, latitude]);
-        var worldCoordinates = this.screenToWorld(screenCoordinates);
-        // var worldCoordinates = new THREE.Vector3(Math.random() * 200,
-        //                                          Math.random() * 200,
-        //                                          Math.random() * 200);
+        var phi = (180 - latitude) * Math.PI / 180;
+        var theta = (180 - longitude) * Math.PI / 180;
+
+        var x = 210 * Math.cos(phi) * Math.cos(theta);
+        var y = 210 * Math.cos(phi) * Math.sin(theta);
+        var z = 210 * Math.sin(phi);
 
         this.data.push({
           'lat': latitude,
           'long': longitude,
-          'position': [
-          worldCoordinates.x,
-          worldCoordinates.y,
-          worldCoordinates.z],
+          'position': [x, y, z],
           'time': timestampMs
         });
-
-        this.geometry.vertices.push(new THREE.Vector3(worldCoordinates.x,
-                                                      worldCoordinates.y,
-                                                      worldCoordinates.z));
         times.push(timestampMs);
+
+        this.geometry.vertices.push(new THREE.Vector3(x, y, z));
     }
 
     var attributes = {
@@ -89,28 +87,19 @@ var ChronoData = function(container, dataURL, projection) {
       minAlphaScale: {type: 'f', value: 0.1}
     };
 
-    // var material = new THREE.PointCloudMaterial({
-    //     color: 0xFFFFFF,
-    //     size: 20,
-    //     map: THREE.ImageUtils.loadTexture(
-    //         'images/circle_alpha.png'
-    //     ),
-    //     blending: THREE.AdditiveBlending,
-    //     transparent: true
-    // });
-
     var material = new THREE.ShaderMaterial({
       attributes:     attributes,
       uniforms:       uniforms,
       vertexShader:   chronodataVertexShader,
       fragmentShader: chronodataFragmentShader,
       transparent:    true,
-      blending:       THREE.AdditiveBlending
+      blending:       THREE.AdditiveBlending,
+      depthWrite:     false
     });
 
     var particles = new THREE.PointCloud(this.geometry, material);
     // particles.frustomCulled = true;
-    particles.sortParticles = true;
+    // particles.sortParticles = true;
 
     this.scene.add(particles);
 
@@ -118,46 +107,28 @@ var ChronoData = function(container, dataURL, projection) {
     // timeInput.setAttribute('max', maxTime);
     // timeRange = maxTime - minTime;
     // setInputTime(minTime);
+
+    var light = new THREE.AmbientLight(0x888888);
+    this.scene.add(light);
+
+    var earthGeometry = new THREE.SphereGeometry(200, 40, 30);
+    var earthMaterial = new THREE.MeshPhongMaterial({
+      map: THREE.ImageUtils.loadTexture('../../dist/images/EarthMapAtmos.jpg')
+    });
+    var earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+    this.scene.add(earthMesh);
 };
 
 
 ChronoData.prototype.update = function() {
-    this.updatePositions();
+    this.controls.update();
 
+    this.render();
+};
+
+
+ChronoData.prototype.render = function() {
     this.renderer.render(this.scene, this.camera);
-};
-
-
-ChronoData.prototype.updatePositions = function() {
-    for (var i = 0; i < this.data.length; ++i) {
-      var screenCoordinates = this.projection([
-        this.data[i]['long'],
-        this.data[i]['lat']]);
-      var worldCoordinates = this.screenToWorld(screenCoordinates);
-
-      this.data['position'] = [
-        worldCoordinates.x,
-        worldCoordinates.y,
-        worldCoordinates.z];
-      this.geometry.vertices[i].x = worldCoordinates.x;
-      this.geometry.vertices[i].y = worldCoordinates.y;
-      this.geometry.vertices[i].z = worldCoordinates.z;
-    }
-
-    this.geometry.verticesNeedUpdate = true;
-};
-
-
-ChronoData.prototype.screenToWorld = function(screenCoordinates) {
-    var vector = new THREE.Vector3(
-      (screenCoordinates[0] / this.width) * 2 - 1,
-      -(screenCoordinates[1] / this.height) * 2 + 1, 0.5);
-
-    vector.unproject(this.camera);
-    var dir = vector.sub(this.camera.position).normalize();
-    var distance = -this.camera.position.z / dir.z;
-    var pos = this.camera.position.clone().add(dir.multiplyScalar(distance));
-    return pos;
 };
 
 
