@@ -3,3 +3,59 @@ body {
     color: #DDDDDD;
     margin: 0;
 }
+
+#controls {
+    /* anchor to the bottom */
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    margin: 0px;
+    height: 32px;
+}
+
+#playPauseButton {
+    text-align: center;
+    position: relative;
+    height: 20px;
+    bottom: 6px;
+}
+
+#timeInput {
+    /* appearance */
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    background-color: #4E4E4E;
+    border: 2px solid;
+    border-color: #191919;
+
+    /* center horizontally */
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
+}
+
+#timeInput::-webkit-slider-thumb {
+    /* appearance */
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    background-color: #B7B7B7;
+    border: 2px solid;
+    border-color: #191919;
+
+    /* size */
+    width: 10px;
+    height: 20px;
+}
+
+#dateBox {
+    color: #E1D6C1;
+    position: absolute;
+    margin-left: 10px;
+    display: inline-block;
+    height: 20px;
+    bottom: 6px;
+}

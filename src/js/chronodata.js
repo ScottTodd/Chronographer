@@ -39,7 +39,8 @@ var ChronoData = function(container, dataURL) {
     var times = [];
     this.geometry = new THREE.Geometry();
     var time;
-    var minTime, maxTime;
+    this.minTime = Number.MAX_VALUE;
+    this.maxTime = 0;
 
     // Load data from a json file.
     var jsonData = JSON.parse(loadText(dataURL));
@@ -48,8 +49,8 @@ var ChronoData = function(container, dataURL) {
     for (var i = 0; i < locations.length; ++i) {
         var timestampMs = locations[i].timestampMs;
 
-        minTime = Math.min(timestampMs, minTime);
-        maxTime = Math.max(timestampMs, maxTime);
+        this.minTime = Math.min(timestampMs, this.minTime);
+        this.maxTime = Math.max(timestampMs, this.maxTime);
 
         var latitude = locations[i].latitudeE7 / 10000000.0;
         var longitude = locations[i].longitudeE7 / 10000000.0;
@@ -84,13 +85,13 @@ var ChronoData = function(container, dataURL) {
         value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
       },
       highlightTime: {type: 'f', value: 1.0},
-      minTime: {type: 'f', value: minTime},
-      maxTime: {type: 'f', value: maxTime},
-      percentHighlightRange: {type: 'f', value: 1.0},
-      minAlphaScale: {type: 'f', value: 0.1}
+      minTime: {type: 'f', value: this.minTime},
+      maxTime: {type: 'f', value: this.maxTime},
+      percentHighlightRange: {type: 'f', value: 0.1},
+      minAlphaScale: {type: 'f', value: 0.0}
     };
 
-    var material = new THREE.ShaderMaterial({
+    this.material = new THREE.ShaderMaterial({
       attributes:     attributes,
       uniforms:       uniforms,
       vertexShader:   chronodataVertexShader,
@@ -100,16 +101,11 @@ var ChronoData = function(container, dataURL) {
       depthWrite:     false
     });
 
-    var particles = new THREE.PointCloud(this.geometry, material);
+    var particles = new THREE.PointCloud(this.geometry, this.material);
     // particles.frustomCulled = true;
     // particles.sortParticles = true;
 
     this.scene.add(particles);
-
-    // timeInput.setAttribute('min', minTime);
-    // timeInput.setAttribute('max', maxTime);
-    // timeRange = maxTime - minTime;
-    // setInputTime(minTime);
 
     var ambientLight = new THREE.AmbientLight(0x888888);
     this.scene.add(ambientLight);
@@ -143,6 +139,21 @@ ChronoData.prototype.update = function() {
     this.controls.update();
 
     this.render();
+};
+
+
+ChronoData.prototype.setTime = function(visualizationTime) {
+    this.material.uniforms['highlightTime'].value = visualizationTime;
+};
+
+
+ChronoData.prototype.getMinTime = function() {
+    return this.minTime;
+};
+
+
+ChronoData.prototype.getMaxTime = function() {
+    return this.maxTime;
 };
 
 
