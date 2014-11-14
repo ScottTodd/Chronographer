@@ -29,7 +29,7 @@ var ChronoData = function(container, dataURL) {
 
     this.camera = new THREE.PerspectiveCamera(75,
       window.innerWidth / window.innerHeight, 1, 3000);
-    this.camera.position.z = 622.5; // 1000.0
+    this.camera.position.z = 30;
 
     this.controls = new THREE.OrbitControls(this.camera,
       this.renderer.domElement);
@@ -44,6 +44,7 @@ var ChronoData = function(container, dataURL) {
     // Load data from a json file.
     var jsonData = JSON.parse(loadText(dataURL));
     var locations = jsonData.locations;
+
     for (var i = 0; i < locations.length; ++i) {
         var timestampMs = locations[i].timestampMs;
 
@@ -53,12 +54,14 @@ var ChronoData = function(container, dataURL) {
         var latitude = locations[i].latitudeE7 / 10000000.0;
         var longitude = locations[i].longitudeE7 / 10000000.0;
 
-        var phi = (180 - latitude) * Math.PI / 180;
-        var theta = (180 - longitude) * Math.PI / 180;
+        var deg2rad = Math.PI / 180.0;
+        var phi = (90 - latitude) * deg2rad;
+        var theta = (180 - longitude) * deg2rad;
+        var r = 10.1;
 
-        var x = 210 * Math.cos(phi) * Math.cos(theta);
-        var y = 210 * Math.cos(phi) * Math.sin(theta);
-        var z = 210 * Math.sin(phi);
+        var x = r * Math.cos(phi) * Math.cos(theta);
+        var y = r * Math.cos(phi);
+        var z = r * Math.sin(phi) * Math.sin(theta);
 
         this.data.push({
           'lat': latitude,
@@ -108,15 +111,31 @@ var ChronoData = function(container, dataURL) {
     // timeRange = maxTime - minTime;
     // setInputTime(minTime);
 
-    var light = new THREE.AmbientLight(0x888888);
-    this.scene.add(light);
+    var ambientLight = new THREE.AmbientLight(0x888888);
+    this.scene.add(ambientLight);
 
-    var earthGeometry = new THREE.SphereGeometry(200, 40, 30);
+    var dirLight = new THREE.DirectionalLight(0xcccccc, 0.2);
+    dirLight.position.set(5, 3, 5);
+    this.scene.add(dirLight);
+
+    var earthGeometry = new THREE.SphereGeometry(10, 80, 60);
     var earthMaterial = new THREE.MeshPhongMaterial({
-      map: THREE.ImageUtils.loadTexture('../../dist/images/EarthMapAtmos.jpg')
+      map: this.loadTexture('earthmap1k.jpg')
     });
+
+    earthMaterial.bumpMap = this.loadTexture('earthbump1k.jpg');
+    earthMaterial.bumpScale = 10;
+    earthMaterial.specularMap = this.loadTexture('earthspec1k.jpg');
+    earthMaterial.specular = new THREE.Color('grey');
+
     var earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+    earthMesh.rotation.y = Math.PI;
     this.scene.add(earthMesh);
+};
+
+
+ChronoData.prototype.loadTexture = function(textureName) {
+    return THREE.ImageUtils.loadTexture('../../dist/images/' + textureName);
 };
 
 
