@@ -27,7 +27,8 @@
     "vinyl-transform": "0.0.1",
     "browserify": "^6.2.0",
     "gulp-run": "^1.6.4",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "gulp-minify-html": "^0.1.6"
   },
   "scripts": {
     "start": "gulp"

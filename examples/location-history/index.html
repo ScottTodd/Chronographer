@@ -5,6 +5,7 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
   <link rel='stylesheet' type='text/css' href='../../dist/styles/main.css'>
+  <link rel='import' href='../../dist/html/chronographer.html'>
 
   <script src='../../third_party/three.min.js'></script>
   <script src='../../third_party/stats.min.js'></script>
@@ -16,24 +17,11 @@
 
 <div id='container'></div>
 
-<div id='controls'>
-    <input type='button' id='playPauseButton' class='control' value='Play/Pause'>
-    <input type='range' id='timeInput' min='0' max='1' step='any'>
-    <div id='dateBox'></div>
-</div>
-
 <script>
   var chronographer;
   var container;
 
   var stats;
-
-  var playPause, timeInput, dataBox;
-  var minTime, maxTime, timeRange;
-  var totalPlayTime = 5.0;
-  var paused = true;
-  var loop = true;
-  var clock = new THREE.Clock();
 
   window.onload = function() {
     init();
@@ -44,82 +32,18 @@
     container = document.getElementById('container');
     chronographer = new Chronographer(container, 'data/private/location.json');
 
-    minTime = chronographer.getMinTime();
-    maxTime = chronographer.getMaxTime();
-    timeRange = maxTime - minTime;
-
     stats = new Stats();
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.top = '0px';
     container.appendChild(stats.domElement);
-
-    playPause = document.getElementById('playPauseButton');
-    playPause.addEventListener('click', handlePlayPause, false);
-    document.onkeypress = function(event) {
-      if (event.keyCode == 32) {
-        event.preventDefault();
-        handlePlayPause();
-      }
-    }
-
-    timeInput = document.getElementById('timeInput');
-    timeInput.setAttribute('min', minTime);
-    timeInput.setAttribute('max', maxTime);
-    timeInput.addEventListener('change',
-        function() {
-          chronographer.setTime(timeInput.value);
-        }, false);
-
-    dateBox = document.getElementById('dateBox');
-  }
+  };
 
   function animate() {
     requestAnimationFrame(animate);
 
     stats.update();
     chronographer.update();
-
-    var dt = clock.getDelta();
-
-    if (!paused) {
-      var deltaTime = timeRange / totalPlayTime * dt;
-      var newTime = parseFloat(timeInput.value) + deltaTime;
-      setInputTime(newTime);
-
-      if (newTime >= maxTime) {
-        if (loop) {
-          setInputTime(minTime);
-        } else {
-          paused = true;
-        }
-      }
-    }
-}
-
-  function handlePlayPause() {
-    // loop = false;
-    paused = !paused;
-    if (parseFloat(timeInput.value) >= maxTime) {
-      paused = true;
-      setInputTime(minTime);
-    }
-  }
-
-  function setInputTime(value) {
-    var clampedValue = Math.max(Math.min(value, maxTime), minTime);
-    timeInput.value = clampedValue;
-    chronographer.setTime(timeInput.value);
-    dateBox.textContent = getFormattedDate(new Date(parseFloat(timeInput.value)));
-  }
-
-  function getFormattedDate(date) {
-    var year = date.getFullYear();
-    var month = (1 + date.getMonth()).toString();
-    month = month.length > 1 ? month : '0' + month;
-    var day = date.getDate().toString();
-    day = day.length > 1 ? day : '0' + day;
-    return year + '/' + month + '/' + day;
-  }
+  };
 </script>
 
 </body>
