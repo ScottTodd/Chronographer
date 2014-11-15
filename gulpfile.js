@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     minifycss = require('gulp-minify-css'),
+    minifyhtml = require('gulp-minify-html'),
     jshint = require('gulp-jshint'),
     browserify = require('browserify'),
     transform = require('vinyl-transform'),
@@ -40,9 +41,6 @@ gulp.task('scripts', function() {
     return b.bundle();
   });
 
-  // Convert shaders into exported javascript strings.
-  run('python util/convertGLSL.py').exec();
-
   // Check code quality with jshint.
   gulp.src(['src/js/**/*.js', '!src/js/shaders/*.js'])
     .pipe(jshint('.jshintrc'))
@@ -57,6 +55,24 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('dist/scripts'))
     .pipe(connect.reload())
     .pipe(notify({ message: 'Scripts task complete' }));
+});
+
+// Shaders
+gulp.task('shaders', function() {
+  // Convert shaders into exported javascript strings.
+  run('python util/convertGLSL.py').exec();
+
+  return gulp.src('src/js/shaders/*.js')
+    .pipe(notify({ message: 'Shaders task complete' }));
+});
+
+// HTML
+gulp.task('html', function() {
+  return gulp.src('src/html/**/*.html')
+    .pipe(minifyhtml({ quotes: true }))
+    .pipe(concat('chronographer.html'))
+    .pipe(gulp.dest('dist/html'))
+    .pipe(notify({ message: 'HTML task complete' }));
 });
 
 // Images
@@ -76,12 +92,13 @@ gulp.task('clean', function(cb) {
 // Watch
 gulp.task('watch', function() {
   gulp.watch('src/styles/**/*.scss', ['styles']);
-  gulp.watch('src/js/**/*.js', ['scripts']);
-  gulp.watch('src/js/**/*.glsl', ['scripts']);
+  gulp.watch(['src/js/**/*.js', '!src/js/shaders/*.js'], ['scripts']);
+  gulp.watch('src/js/**/*.glsl', ['shaders']);
+  gulp.watch('src/html/**/*.html', ['html']);
   gulp.watch('src/images/**/*', ['images']);
 });
 
-gulp.task('connect', ['styles', 'scripts', 'images', 'watch'], function() {
+gulp.task('connect', ['styles', 'scripts', 'shaders', 'images', 'html', 'watch'], function() {
     connect.server({
         livereload: true,
         port: 8080

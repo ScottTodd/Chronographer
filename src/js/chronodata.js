@@ -25,21 +25,24 @@ var ChronoData = function(container, dataURL) {
     // effect = new THREE.StereoEffect(renderer);
     // effect.setSize(window.innerWidth, window.innerHeight);
 
+    this.radius = 300;
+
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(75,
       window.innerWidth / window.innerHeight, 1, 3000);
-    this.camera.position.z = 30;
+    this.camera.position.z = this.radius * 2.5;
 
     this.controls = new THREE.OrbitControls(this.camera,
       this.renderer.domElement);
     this.controls.addEventListener('change', this.render.bind(this));
+    this.controls.noPan = true;
 
     this.data = [];
     var times = [];
     this.geometry = new THREE.Geometry();
-    var time;
-    var minTime, maxTime;
+    this.minTime = Number.MAX_VALUE;
+    this.maxTime = 0;
 
     // Load data from a json file.
     var jsonData = JSON.parse(loadText(dataURL));
@@ -48,8 +51,8 @@ var ChronoData = function(container, dataURL) {
     for (var i = 0; i < locations.length; ++i) {
         var timestampMs = locations[i].timestampMs;
 
-        minTime = Math.min(timestampMs, minTime);
-        maxTime = Math.max(timestampMs, maxTime);
+        this.minTime = Math.min(timestampMs, this.minTime);
+        this.maxTime = Math.max(timestampMs, this.maxTime);
 
         var latitude = locations[i].latitudeE7 / 10000000.0;
         var longitude = locations[i].longitudeE7 / 10000000.0;
@@ -57,11 +60,10 @@ var ChronoData = function(container, dataURL) {
         var deg2rad = Math.PI / 180.0;
         var phi = (90 - latitude) * deg2rad;
         var theta = (180 - longitude) * deg2rad;
-        var r = 10.1;
 
-        var x = r * Math.cos(phi) * Math.cos(theta);
-        var y = r * Math.cos(phi);
-        var z = r * Math.sin(phi) * Math.sin(theta);
+        var x = (this.radius * 1.01) * Math.cos(phi) * Math.cos(theta);
+        var y = (this.radius * 1.01) * Math.cos(phi);
+        var z = (this.radius * 1.01) * Math.sin(phi) * Math.sin(theta);
 
         this.data.push({
           'lat': latitude,
@@ -84,13 +86,13 @@ var ChronoData = function(container, dataURL) {
         value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
       },
       highlightTime: {type: 'f', value: 1.0},
-      minTime: {type: 'f', value: minTime},
-      maxTime: {type: 'f', value: maxTime},
-      percentHighlightRange: {type: 'f', value: 1.0},
-      minAlphaScale: {type: 'f', value: 0.1}
+      minTime: {type: 'f', value: this.minTime},
+      maxTime: {type: 'f', value: this.maxTime},
+      percentHighlightRange: {type: 'f', value: 0.1},
+      minAlphaScale: {type: 'f', value: 0.0}
     };
 
-    var material = new THREE.ShaderMaterial({
+    this.material = new THREE.ShaderMaterial({
       attributes:     attributes,
       uniforms:       uniforms,
       vertexShader:   chronodataVertexShader,
@@ -100,16 +102,11 @@ var ChronoData = function(container, dataURL) {
       depthWrite:     false
     });
 
-    var particles = new THREE.PointCloud(this.geometry, material);
+    var particles = new THREE.PointCloud(this.geometry, this.material);
     // particles.frustomCulled = true;
     // particles.sortParticles = true;
 
     this.scene.add(particles);
-
-    // timeInput.setAttribute('min', minTime);
-    // timeInput.setAttribute('max', maxTime);
-    // timeRange = maxTime - minTime;
-    // setInputTime(minTime);
 
     var ambientLight = new THREE.AmbientLight(0x888888);
     this.scene.add(ambientLight);
@@ -118,13 +115,13 @@ var ChronoData = function(container, dataURL) {
     dirLight.position.set(5, 3, 5);
     this.scene.add(dirLight);
 
-    var earthGeometry = new THREE.SphereGeometry(10, 80, 60);
+    var earthGeometry = new THREE.SphereGeometry(this.radius, 80, 60);
     var earthMaterial = new THREE.MeshPhongMaterial({
       map: this.loadTexture('earthmap1k.jpg')
     });
 
     earthMaterial.bumpMap = this.loadTexture('earthbump1k.jpg');
-    earthMaterial.bumpScale = 10;
+    earthMaterial.bumpScale = this.radius;
     earthMaterial.specularMap = this.loadTexture('earthspec1k.jpg');
     earthMaterial.specular = new THREE.Color('grey');
 
@@ -143,6 +140,21 @@ ChronoData.prototype.update = function() {
     this.controls.update();
 
     this.render();
+};
+
+
+ChronoData.prototype.setTime = function(visualizationTime) {
+    this.material.uniforms['highlightTime'].value = visualizationTime;
+};
+
+
+ChronoData.prototype.getMinTime = function() {
+    return this.minTime;
+};
+
+
+ChronoData.prototype.getMaxTime = function() {
+    return this.maxTime;
 };
 
 
