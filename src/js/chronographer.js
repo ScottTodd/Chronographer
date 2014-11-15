@@ -1,11 +1,9 @@
 'use strict';
 
-var WorldMap = require('./WorldMap');
 var ChronoData = require('./ChronoData');
 
 
 var Chronographer = function(container, data) {
-    // this.worldMap = new WorldMap(container, mapData);
     this.chronoData = new ChronoData(container, data);
 };
 

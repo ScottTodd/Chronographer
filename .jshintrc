@@ -84,8 +84,6 @@
 
     // Custom Globals
     "globals"       : {
-        "THREE" : false,
-        "d3"    : false,
-        "topojson": false
+        "THREE" : false
     }
 }
