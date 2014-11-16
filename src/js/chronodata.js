@@ -9,15 +9,6 @@ var ChronoData = function(container, dataURL) {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
-    function loadText(url) {
-      var request = new XMLHttpRequest();
-      request.open('GET', url, false); // Synchronous.
-      request.overrideMimeType('text/plain');
-      request.send();
-
-      return request.responseText;
-    }
-
     this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(this.renderer.domElement);
@@ -39,6 +30,30 @@ var ChronoData = function(container, dataURL) {
     this.controls.addEventListener('change', this.render.bind(this));
     this.controls.noPan = true;
     this.controls.rotateSpeed = 0.5;
+
+    var ambientLight = new THREE.AmbientLight(0x888888);
+    this.scene.add(ambientLight);
+
+    var dirLight = new THREE.DirectionalLight(0xcccccc, 0.2);
+    dirLight.position.set(5, 3, 5);
+    this.scene.add(dirLight);
+
+    this.createParticles(dataURL);
+
+    var earth = new Earth(this.scene, this.radius);
+
+};
+
+
+ChronoData.prototype.createParticles = function(dataURL) {
+    function loadText(url) {
+      var request = new XMLHttpRequest();
+      request.open('GET', url, false); // Synchronous.
+      request.overrideMimeType('text/plain');
+      request.send();
+
+      return request.responseText;
+    }
 
     this.data = [];
     var times = [];
@@ -109,29 +124,6 @@ var ChronoData = function(container, dataURL) {
     // particles.sortParticles = true;
 
     this.scene.add(particles);
-
-    var ambientLight = new THREE.AmbientLight(0x888888);
-    this.scene.add(ambientLight);
-
-    var dirLight = new THREE.DirectionalLight(0xcccccc, 0.2);
-    dirLight.position.set(5, 3, 5);
-    this.scene.add(dirLight);
-
-    var earth = new Earth(this.scene, this.radius);
-
-    earthMaterial.bumpMap = this.loadTexture('earthbump1k.jpg');
-    earthMaterial.bumpScale = this.radius;
-    earthMaterial.specularMap = this.loadTexture('earthspec1k.jpg');
-    earthMaterial.specular = new THREE.Color('grey');
-
-    var earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
-    earthMesh.rotation.y = Math.PI;
-    this.scene.add(earthMesh);
-};
-
-
-ChronoData.prototype.loadTexture = function(textureName) {
-    return THREE.ImageUtils.loadTexture('../../dist/images/' + textureName);
 };
 
 
