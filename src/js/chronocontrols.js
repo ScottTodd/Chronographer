@@ -42,6 +42,7 @@ ChronoControls.prototype.setTimeRange = function(minTime, maxTime) {
 
     this.timeInput.setAttribute('min', minTime);
     this.timeInput.setAttribute('max', maxTime);
+    this.setInputTime(minTime);
 };
 
 

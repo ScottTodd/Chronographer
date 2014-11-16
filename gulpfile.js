@@ -93,7 +93,7 @@ gulp.task('clean', function(cb) {
 gulp.task('watch', function() {
   gulp.watch('src/styles/**/*.scss', ['styles']);
   gulp.watch(['src/js/**/*.js', '!src/js/shaders/*.js'], ['scripts']);
-  gulp.watch('src/js/**/*.glsl', ['shaders']);
+  gulp.watch('src/js/**/*.glsl', ['shaders', 'scripts']);
   gulp.watch('src/html/**/*.html', ['html']);
   gulp.watch('src/images/**/*', ['images']);
 });

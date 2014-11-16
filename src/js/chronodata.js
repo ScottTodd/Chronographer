@@ -2,6 +2,7 @@
 
 var chronodataVertexShader = require('./shaders/chronodataVertex');
 var chronodataFragmentShader = require('./shaders/chronodataFragment');
+var Earth = require('./Earth');
 
 
 var ChronoData = function(container, dataURL) {
@@ -37,6 +38,7 @@ var ChronoData = function(container, dataURL) {
       this.renderer.domElement);
     this.controls.addEventListener('change', this.render.bind(this));
     this.controls.noPan = true;
+    this.controls.rotateSpeed = 0.5;
 
     this.data = [];
     var times = [];
@@ -85,10 +87,10 @@ var ChronoData = function(container, dataURL) {
         type: 't',
         value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
       },
-      highlightTime: {type: 'f', value: 1.0},
+      highlightTime: {type: 'f', value: this.minTime},
       minTime: {type: 'f', value: this.minTime},
       maxTime: {type: 'f', value: this.maxTime},
-      percentHighlightRange: {type: 'f', value: 0.1},
+      percentHighlightRange: {type: 'f', value: 0.02},
       minAlphaScale: {type: 'f', value: 0.0}
     };
 
@@ -98,7 +100,7 @@ var ChronoData = function(container, dataURL) {
       vertexShader:   chronodataVertexShader,
       fragmentShader: chronodataFragmentShader,
       transparent:    true,
-      blending:       THREE.AdditiveBlending,
+      blending:       THREE.NormalBlending,
       depthWrite:     false
     });
 
@@ -115,10 +117,7 @@ var ChronoData = function(container, dataURL) {
     dirLight.position.set(5, 3, 5);
     this.scene.add(dirLight);
 
-    var earthGeometry = new THREE.SphereGeometry(this.radius, 80, 60);
-    var earthMaterial = new THREE.MeshPhongMaterial({
-      map: this.loadTexture('earthmap1k.jpg')
-    });
+    var earth = new Earth(this.scene, this.radius);
 
     earthMaterial.bumpMap = this.loadTexture('earthbump1k.jpg');
     earthMaterial.bumpScale = this.radius;
