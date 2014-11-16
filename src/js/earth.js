@@ -1,6 +1,6 @@
 'use strict';
 
-var Earth = function(scene, radius) {
+var Earth = function(radius) {
     var earthGeometry = new THREE.SphereGeometry(radius, 80, 60);
     var earthMaterial = new THREE.MeshPhongMaterial({
       map: this.loadTexture('earthmap1k.jpg')
@@ -11,9 +11,14 @@ var Earth = function(scene, radius) {
     earthMaterial.specularMap = this.loadTexture('earthspec1k.jpg');
     earthMaterial.specular = new THREE.Color('grey');
 
-    var earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
-    earthMesh.rotation.y = Math.PI;
-    scene.add(earthMesh);
+    this.earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
+    this.earthMesh.rotation.y = Math.PI;
+};
+
+
+Earth.prototype.setScene = function(scene) {
+    this.scene = scene;
+    scene.add(this.earthMesh);
 };
 
 
