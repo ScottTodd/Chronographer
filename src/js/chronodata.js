@@ -27,7 +27,7 @@ var ChronoData = function(dataURL, radius) {
     var locations = jsonData.locations;
 
     for (var i = 0; i < locations.length; ++i) {
-        var timestampMs = locations[i].timestampMs;
+        var timestampMs = parseFloat(locations[i].timestampMs);
 
         this.minTime = Math.min(timestampMs, this.minTime);
         this.maxTime = Math.max(timestampMs, this.maxTime);
@@ -81,9 +81,14 @@ var ChronoData = function(dataURL, radius) {
     });
 
     this.particles = new THREE.PointCloud(this.geometry, this.material);
-    // particles.frustomCulled = true;
     // particles.sortParticles = true;
 
+    function compare(a, b) {
+        if (a.time < b.time) { return -1; }
+        if (a.time > b.time) { return 1; }
+        return 0;
+    }
+    this.data.sort(compare);
 };
 
 
@@ -98,8 +103,14 @@ ChronoData.prototype.update = function() {
 };
 
 
-ChronoData.prototype.setTime = function(visualizationTime) {
-    this.material.uniforms['highlightTime'].value = visualizationTime;
+ChronoData.prototype.setTime = function(newTime) {
+    this.currentTime = newTime;
+    this.material.uniforms['highlightTime'].value = newTime;
+};
+
+
+ChronoData.prototype.getCurrentTime = function() {
+    return this.currentTime;
 };
 
 
@@ -110,6 +121,11 @@ ChronoData.prototype.getMinTime = function() {
 
 ChronoData.prototype.getMaxTime = function() {
     return this.maxTime;
+};
+
+
+ChronoData.prototype.getData = function() {
+    return this.data;
 };
 
 

@@ -31,7 +31,7 @@ var ChronoControls = function(container) {
 
 
 ChronoControls.prototype.getTime = function() {
-    return this.timeInput.value;
+    return parseFloat(this.timeInput.value);
 };
 
 

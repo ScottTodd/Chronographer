@@ -3,6 +3,7 @@
 var ChronoData = require('./ChronoData');
 var ChronoControls = require('./ChronoControls');
 var Earth = require('./Earth');
+var FollowLine = require('./FollowLine');
 
 
 var Chronographer = function(container, data) {
@@ -23,6 +24,9 @@ var Chronographer = function(container, data) {
 
     this.earth = new Earth(this.radius);
     this.earth.setScene(this.scene);
+
+    this.followLine = new FollowLine(this.chronoData, this.radius);
+    this.followLine.setScene(this.scene);
 };
 
 
@@ -68,6 +72,7 @@ Chronographer.prototype.update = function() {
     this.chronoData.setTime(this.chronoControls.getTime());
 
     this.chronoData.update(dt);
+    this.followLine.update(dt);
 
     this.controls.update();
     this.render();
