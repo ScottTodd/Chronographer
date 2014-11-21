@@ -7,6 +7,8 @@ var FollowLine = require('./FollowLine');
 
 
 var Chronographer = function(container, data) {
+    if (!Detector.webgl) { Detector.addGetWebGLMessage(); }
+
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.radius = 300;
@@ -36,8 +38,8 @@ Chronographer.prototype.setupRenderer = function(container) {
     container.appendChild(this.renderer.domElement);
     this.renderer.domElement.id = 'cgr-chronoData';
 
-    // effect = new THREE.StereoEffect(renderer);
-    // effect.setSize(window.innerWidth, window.innerHeight);
+    this.effect = new THREE.StereoEffect(this.renderer);
+    this.effect.setSize(this.width, this.height);
 };
 
 
@@ -80,7 +82,9 @@ Chronographer.prototype.update = function() {
 
 
 Chronographer.prototype.render = function() {
+    this.renderer.clear()
     this.renderer.render(this.scene, this.camera);
+    // this.effect.render(this.scene, this.camera);
 };
 
 
