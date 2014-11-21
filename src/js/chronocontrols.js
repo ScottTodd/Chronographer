@@ -56,8 +56,9 @@ ChronoControls.prototype.setInputTime = function(inputTime) {
 
 
 ChronoControls.prototype.updateTimeDisplay = function() {
-    var date = new Date(parseFloat(this.timeInput.value));
-    this.dateBox.textContent = this.getFormattedDate(date);
+    // var date = new Date(parseFloat(this.timeInput.value));
+    // this.dateBox.textContent = this.getFormattedDate(date);
+    this.dateBox.textContent = Math.round(parseFloat(this.timeInput.value));
 };
 
 

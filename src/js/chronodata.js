@@ -27,13 +27,16 @@ var ChronoData = function(dataURL, radius) {
     var locations = jsonData.locations;
 
     for (var i = 0; i < locations.length; ++i) {
-        var timestampMs = parseFloat(locations[i].timestampMs);
+        var timestampMs = parseFloat(locations[i].timestampMs) ||
+                          locations[i].Year;
 
         this.minTime = Math.min(timestampMs, this.minTime);
         this.maxTime = Math.max(timestampMs, this.maxTime);
 
-        var latitude = locations[i].latitudeE7 / 10000000.0;
-        var longitude = locations[i].longitudeE7 / 10000000.0;
+        var latitude = locations[i].latitudeE7 / 10000000.0 ||
+                       locations[i].Latitude;
+        var longitude = locations[i].longitudeE7 / 10000000.0 ||
+                        locations[i].Longitude;
 
         var deg2rad = Math.PI / 180.0;
         var phi = (90 - latitude) * deg2rad;
@@ -66,7 +69,7 @@ var ChronoData = function(dataURL, radius) {
       highlightTime: {type: 'f', value: this.minTime},
       minTime: {type: 'f', value: this.minTime},
       maxTime: {type: 'f', value: this.maxTime},
-      percentHighlightRange: {type: 'f', value: 0.02},
+      percentHighlightRange: {type: 'f', value: 0.01},
       minAlphaScale: {type: 'f', value: 0.0}
     };
 

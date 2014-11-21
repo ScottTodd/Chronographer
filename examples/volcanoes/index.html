@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Chronographer - Location History Example</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+  <link rel='stylesheet' type='text/css' href='../../dist/styles/main.css'>
+  <link rel='import' href='../../dist/html/chronographer.html'>
+
+  <script src='../../third_party/three.min.js'></script>
+  <script src='../../third_party/stats.min.js'></script>
+  <script src='../../third_party/OrbitControls.js'></script>
+  <script src='../../third_party/Detector.js'></script>
+  <script src='../../third_party/StereoEffect.js'></script>
+  <script src='../../dist/scripts/main.js'></script>
+</head>
+
+<body>
+
+<div id='container'></div>
+
+<script>
+  var chronographer;
+  var container;
+
+  var stats;
+
+  window.onload = function() {
+    init();
+    animate();
+  };
+
+  function init() {
+    container = document.getElementById('container');
+    chronographer = new Chronographer(container, 'data/volcanoes.json');
+
+    stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    container.appendChild(stats.domElement);
+  };
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    stats.update();
+    chronographer.update();
+  };
+</script>
+
+</body>
+</html>
