@@ -43,6 +43,18 @@ Chronographer.prototype.setupRenderer = function(container) {
 };
 
 
+Chronographer.prototype.onWindowResize = function() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+
+    this.camera.aspect = this.width / this.height;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(this.width, this.height);
+    this.effect.setSize(this.width, this.height);
+};
+
+
 Chronographer.prototype.setupScene = function() {
     this.scene = new THREE.Scene();
 
@@ -65,6 +77,8 @@ Chronographer.prototype.setupScene = function() {
     this.scene.add(dirLight);
 
     this.clock = new THREE.Clock();
+
+    window.addEventListener('resize', this.onWindowResize.bind(this), false);
 };
 
 
