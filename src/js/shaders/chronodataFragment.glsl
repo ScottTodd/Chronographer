@@ -1,70 +1,14 @@
 uniform sampler2D particleTexture;
 
-uniform float minTime;
-uniform float maxTime;
-uniform float visualizationTime;
-uniform float percentHighlightRange;
-
-uniform float minAlpha;
-uniform float maxAlpha;
-uniform vec3 minColor;
-uniform vec3 maxColor;
-
-varying float vertexTime;
-
-float lerp(float minValue, float maxValue, float t) {
-    return (minValue * (1.0 - t)) + (maxValue * t);
-}
-
-float inverseLerp(float value, float minValue, float maxValue) {
-    float valueRange = maxValue - minValue;
-    float inverseLerped = (value - minValue) / valueRange;
-    float clamped = clamp(inverseLerped, 0.0, 1.0);
-    return inverseLerped;
-}
-
-// RGB to HSV and HSV to RGB
-// source: http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
-vec3 rgb2hsv(vec3 c) {
-    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-    vec4 p = c.g < c.b ? vec4(c.bg, K.wz) : vec4(c.gb, K.xy);
-    vec4 q = c.r < p.x ? vec4(p.xyw, c.r) : vec4(c.r, p.yzx);
-
-    float d = q.x - min(q.w, q.y);
-    float e = 1.0e-10;
-    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
-}
-
-vec3 hsv2rgb(vec3 c) {
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
+varying float t;
+varying vec3 timeColor;
+varying float timeAlpha;
 
 void main() {
-    // Find what percent of the time this vertex (data point) is at.
-    float vertexPercent = inverseLerp(vertexTime, minTime, maxTime);
-
-    // Find what percent of the time the visualization is at.
-    float visPercent = inverseLerp(visualizationTime, minTime, maxTime);
-
-    // Find the difference between those percentages.
-    float percentDifference = abs(vertexPercent - visPercent);
-
-    // Scale that based on the highlight range into an interpolation time.
-    float t = clamp(1.0 - percentDifference / percentHighlightRange, 0.0, 1.0);
-
     float textureAlpha = texture2D(particleTexture, gl_PointCoord).a;
-    float timeAlpha = lerp(minAlpha, maxAlpha, t);
     float alpha = textureAlpha * timeAlpha;
 
-    vec3 minHSV = rgb2hsv(minColor);
-    vec3 maxHSV = rgb2hsv(maxColor);
-    float h = lerp(minHSV.x, maxHSV.x, t);
-    float s = lerp(minHSV.y, maxHSV.y, t);
-    float v = lerp(minHSV.z, maxHSV.z, t);
-
-    vec3 color = hsv2rgb(vec3(h, s, v));
+    vec3 color = timeColor;
 
     gl_FragColor = vec4(color, alpha);
 }

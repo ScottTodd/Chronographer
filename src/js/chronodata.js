@@ -73,7 +73,9 @@ var ChronoData = function(dataURL, radius) {
       minAlpha: {type: 'f', value: 1.0},
       maxAlpha: {type: 'f', value: 1.0},
       minColor: {type: 'c', value: new THREE.Color(0x888888) },
-      maxColor: {type: 'c', value: new THREE.Color(0xFB130D) }
+      maxColor: {type: 'c', value: new THREE.Color(0xFB130D) },
+      minSize: {type: 'f', value: 12.0},
+      maxSize: {type: 'f', value: 32.0}
     };
 
     this.material = new THREE.ShaderMaterial({
