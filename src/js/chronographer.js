@@ -83,7 +83,7 @@ Chronographer.prototype.update = function() {
 
 
 Chronographer.prototype.render = function() {
-    this.renderer.clear()
+    this.renderer.clear();
     this.renderer.render(this.scene, this.camera);
     // this.effect.render(this.scene, this.camera);
 };

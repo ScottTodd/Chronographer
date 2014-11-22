@@ -66,11 +66,14 @@ var ChronoData = function(dataURL, radius) {
         type: 't',
         value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
       },
-      highlightTime: {type: 'f', value: this.minTime},
+      visualizationTime: {type: 'f', value: this.minTime},
       minTime: {type: 'f', value: this.minTime},
       maxTime: {type: 'f', value: this.maxTime},
-      percentHighlightRange: {type: 'f', value: 0.01},
-      minAlphaScale: {type: 'f', value: 0.0}
+      percentHighlightRange: {type: 'f', value: 0.11},
+      minAlpha: {type: 'f', value: 1.0},
+      maxAlpha: {type: 'f', value: 1.0},
+      minColor: {type: 'c', value: new THREE.Color(0x888888) },
+      maxColor: {type: 'c', value: new THREE.Color(0xFB130D) }
     };
 
     this.material = new THREE.ShaderMaterial({
@@ -108,7 +111,7 @@ ChronoData.prototype.update = function() {
 
 ChronoData.prototype.setTime = function(newTime) {
     this.currentTime = newTime;
-    this.material.uniforms['highlightTime'].value = newTime;
+    this.material.uniforms['visualizationTime'].value = newTime;
 };
 
 
