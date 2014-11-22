@@ -48,7 +48,8 @@ Chronographer.prototype.setupScene = function() {
 
     this.camera = new THREE.PerspectiveCamera(75,
       window.innerWidth / window.innerHeight, 1, 3000);
-    this.camera.position.z = this.radius * 2.5;
+    this.camera.position.z = -(this.radius * 2.5);
+    this.camera.position.y = this.radius * 1.5;
 
     this.controls = new THREE.OrbitControls(this.camera,
       this.renderer.domElement);

@@ -39,12 +39,12 @@ var ChronoData = function(dataURL, radius) {
                         locations[i].Longitude;
 
         var deg2rad = Math.PI / 180.0;
-        var phi = (90 - latitude) * deg2rad;
+        var phi = latitude * deg2rad;
         var theta = (180 - longitude) * deg2rad;
 
         var x = (this.radius * 1.01) * Math.cos(phi) * Math.cos(theta);
-        var y = (this.radius * 1.01) * Math.cos(phi);
-        var z = (this.radius * 1.01) * Math.sin(phi) * Math.sin(theta);
+        var y = (this.radius * 1.01) * Math.sin(phi);
+        var z = (this.radius * 1.01) * Math.cos(phi) * Math.sin(theta);
 
         this.data.push({
           'lat': latitude,
