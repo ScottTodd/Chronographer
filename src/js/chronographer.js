@@ -11,7 +11,7 @@ var Chronographer = function(container, data, opts) {
 
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.radius = 300;
+    this.radius = 1000;
 
     this.setupRenderer(container);
     this.setupScene();
@@ -59,7 +59,7 @@ Chronographer.prototype.setupScene = function() {
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(75,
-      window.innerWidth / window.innerHeight, 1, 3000);
+      window.innerWidth / window.innerHeight, 1, 30000);
     this.camera.position.z = -(this.radius * 2.5);
     this.camera.position.y = this.radius * 1.5;
 

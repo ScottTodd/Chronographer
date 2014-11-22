@@ -1,2 +1,0 @@
-source: http://planetpixelemporium.com/earth.html
-terms: http://planetpixelemporium.com/planets.html

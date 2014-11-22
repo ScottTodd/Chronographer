@@ -86,7 +86,8 @@ gulp.task('images', function() {
 
 // Clean
 gulp.task('clean', function(cb) {
-    del(['dist/scripts', 'dist/styles', 'dist/images'], cb)
+    del(['dist/scripts', 'dist/styles', 'dist/images', 'dist/html'], cb);
+    cache.clearAll();
 });
 
 // Watch

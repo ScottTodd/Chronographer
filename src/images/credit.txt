@@ -1,3 +1,5 @@
-Earth textures from user 'res' on www.creativecrash.com
+Earth textures from Bjørn Sandvik
+http://blog.thematicmapping.org/2013/09/creating-webgl-earth-with-threejs.html
 
-http://www.creativecrash.com/maya/downloads/scene-files/c/3d-planet-earth-with-complete-textures-for-free
+With original textures from
+http://www.shadedrelief.com/natural3/pages/textures.html
