@@ -21,8 +21,6 @@
 
 <script>
   var chronographer;
-  var container;
-
   var stats;
 
   window.onload = function() {
@@ -31,8 +29,18 @@
   };
 
   function init() {
-    container = document.getElementById('container');
-    chronographer = new Chronographer(container, 'data/private/location.json');
+    var opts = {
+      percentHighlightRange: 0.01,
+      minAlpha: 1.0,
+      maxAlpha: 1.0,
+      minColor: new THREE.Color(0x7EC5D1),
+      maxColor: new THREE.Color(0xE32402),
+      minSize: 6.0,
+      maxSize: 16.0
+    };
+
+    var container = document.getElementById('container');
+    chronographer = new Chronographer(container, 'data/private/location.json', opts);
 
     stats = new Stats();
     stats.domElement.style.position = 'absolute';

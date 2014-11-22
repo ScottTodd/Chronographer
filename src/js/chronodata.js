@@ -4,7 +4,7 @@ var chronodataVertexShader = require('./shaders/chronodataVertex');
 var chronodataFragmentShader = require('./shaders/chronodataFragment');
 
 
-var ChronoData = function(dataURL, radius) {
+var ChronoData = function(dataURL, radius, opts) {
     this.radius = radius;
 
     function loadText(url) {
@@ -66,16 +66,46 @@ var ChronoData = function(dataURL, radius) {
         type: 't',
         value: THREE.ImageUtils.loadTexture('images/circle_alpha.png')
       },
-      visualizationTime: {type: 'f', value: this.minTime},
-      minTime: {type: 'f', value: this.minTime},
-      maxTime: {type: 'f', value: this.maxTime},
-      percentHighlightRange: {type: 'f', value: 0.11},
-      minAlpha: {type: 'f', value: 1.0},
-      maxAlpha: {type: 'f', value: 1.0},
-      minColor: {type: 'c', value: new THREE.Color(0x888888) },
-      maxColor: {type: 'c', value: new THREE.Color(0xFB130D) },
-      minSize: {type: 'f', value: 12.0},
-      maxSize: {type: 'f', value: 32.0}
+      visualizationTime: {
+        type: 'f',
+        value: this.minTime
+      },
+      minTime: {
+        type: 'f',
+        value: this.minTime
+      },
+      maxTime: {
+        type: 'f',
+        value: this.maxTime
+      },
+      percentHighlightRange: {
+        type: 'f',
+        value: (opts && opts.percentHighlightRange) || 0.10
+      },
+      minAlpha: {
+        type: 'f',
+        value: (opts && opts.minAlpha) || 1.0
+      },
+      maxAlpha: {
+        type: 'f',
+        value: (opts && opts.maxAlpha) || 1.0
+      },
+      minColor: {
+        type: 'c',
+        value: (opts && opts.minColor) || new THREE.Color(0x222222)
+      },
+      maxColor: {
+        type: 'c',
+        value: (opts && opts.maxColor) || new THREE.Color(0xEEEEEE)
+      },
+      minSize: {
+        type: 'f',
+        value: (opts && opts.minSize) || 12.0
+      },
+      maxSize: {
+        type: 'f',
+        value: (opts && opts.maxSize) || 32.0
+      }
     };
 
     this.material = new THREE.ShaderMaterial({
