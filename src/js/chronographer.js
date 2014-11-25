@@ -9,11 +9,12 @@ var FollowLine = require('./FollowLine');
 var Chronographer = function(container, data, opts) {
     if (!Detector.webgl) { Detector.addGetWebGLMessage(); }
 
+    this.container = container;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.radius = 1000;
 
-    this.setupRenderer(container);
+    this.setupRenderer();
     this.setupScene();
 
     this.chronoData = new ChronoData(data, this.radius, opts);
@@ -27,15 +28,17 @@ var Chronographer = function(container, data, opts) {
     this.earth = new Earth(this.radius);
     this.earth.setScene(this.scene);
 
-    this.followLine = new FollowLine(this.chronoData, this.radius);
-    this.followLine.setScene(this.scene);
+    if (opts.followLine) {
+        this.followLine = new FollowLine(this.chronoData, this.radius);
+        this.followLine.setScene(this.scene);
+    }
 };
 
 
-Chronographer.prototype.setupRenderer = function(container) {
+Chronographer.prototype.setupRenderer = function() {
     this.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(this.renderer.domElement);
+    this.container.appendChild(this.renderer.domElement);
     this.renderer.domElement.id = 'cgr-chronoData';
 
     this.effect = new THREE.StereoEffect(this.renderer);
@@ -52,6 +55,33 @@ Chronographer.prototype.onWindowResize = function() {
 
     this.renderer.setSize(this.width, this.height);
     this.effect.setSize(this.width, this.height);
+};
+
+
+Chronographer.prototype.setOrientationControls = function() {
+    this.controls = new THREE.DeviceOrientationControls(this.camera, true);
+    this.controls.connect();
+    this.controls.update();
+
+    this.renderer.domElement.addEventListener('click',
+                                              this.fullscreen.bind(this),
+                                              false);
+
+    window.removeEventListener('deviceorientation',
+                               this.setOrientationControls);
+};
+
+
+Chronographer.prototype.fullscreen = function() {
+    if (this.container.requestFullscreen) {
+        this.container.requestFullscreen();
+    } else if (this.container.msRequestFullscreen) {
+        this.container.msRequestFullscreen();
+    } else if (this.container.mozRequestFullScreen) {
+        this.container.mozRequestFullScreen();
+    } else if (this.container.webkitRequestFullscreen) {
+        this.container.webkitRequestFullscreen();
+    }
 };
 
 
@@ -79,6 +109,8 @@ Chronographer.prototype.setupScene = function() {
     this.clock = new THREE.Clock();
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
+    // window.addEventListener('deviceorientation',
+    //                         this.setOrientationControls.bind(this), false);
 };
 
 
@@ -89,7 +121,9 @@ Chronographer.prototype.update = function() {
     this.chronoData.setTime(this.chronoControls.getTime());
 
     this.chronoData.update(dt);
-    this.followLine.update(dt);
+    if (this.followLine) {
+        this.followLine.update(dt);
+    }
 
     this.controls.update();
     this.render();

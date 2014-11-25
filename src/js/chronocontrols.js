@@ -18,10 +18,10 @@ var ChronoControls = function(container) {
     this.playPause.addEventListener('click', this.handlePlayPause.bind(this),
                                     false);
     document.onkeypress = function(event) {
-      if (event.keyCode === 32) {
-        event.preventDefault();
-        this.handlePlayPause();
-      }
+        if (event.keyCode === 32) {
+            event.preventDefault();
+            this.handlePlayPause();
+        }
     }.bind(this);
 
     // Also update if the input slider is changed directly.
@@ -73,30 +73,30 @@ ChronoControls.prototype.getFormattedDate = function(date) {
 
 
 ChronoControls.prototype.handlePlayPause = function() {
-  this.loop = false;
-  this.paused = !this.paused;
-  if (parseFloat(this.timeInput.value) >= this.maxTime) {
-    this.paused = true;
-    this.setInputTime(this.minTime);
-  }
+    this.loop = false;
+    this.paused = !this.paused;
+    if (parseFloat(this.timeInput.value) >= this.maxTime) {
+        this.paused = true;
+        this.setInputTime(this.minTime);
+    }
 };
 
 
 ChronoControls.prototype.update = function(dt) {
     if (!this.paused) {
-      // Scale dt to cover this.timeRange over this.totalPlaytime.
-      var deltaTime = this.timeRange / this.totalPlayTime * dt;
-      var newTime = parseFloat(this.timeInput.value) + deltaTime;
-      this.setInputTime(newTime);
+        // Scale dt to cover this.timeRange over this.totalPlaytime.
+        var deltaTime = this.timeRange / this.totalPlayTime * dt;
+        var newTime = parseFloat(this.timeInput.value) + deltaTime;
+        this.setInputTime(newTime);
 
-      // End of time range? Loop back to the start or pause.
-      if (newTime >= this.maxTime) {
-        if (this.loop) {
-          this.setInputTime(this.minTime);
-        } else {
-          this.paused = true;
+        // End of time range? Loop back to the start or pause.
+        if (newTime >= this.maxTime) {
+            if (this.loop) {
+                this.setInputTime(this.minTime);
+            } else {
+                this.paused = true;
+            }
         }
-      }
     }
 };
 
