@@ -2,6 +2,7 @@
 
 var ChronoData = require('./ChronoData');
 var ChronoControls = require('./ChronoControls');
+var DeviceOrbitControls = require('./DeviceOrbitControls');
 var Earth = require('./Earth');
 var FollowLine = require('./FollowLine');
 
@@ -59,9 +60,7 @@ Chronographer.prototype.onWindowResize = function() {
 
 
 Chronographer.prototype.setOrientationControls = function() {
-    this.controls = new THREE.DeviceOrientationControls(this.camera, true);
-    this.controls.connect();
-    this.controls.update();
+    this.controls = new DeviceOrbitControls(this.camera, this.radius * 2.0);
 
     this.renderer.domElement.addEventListener('click',
                                               this.fullscreen.bind(this),
@@ -82,6 +81,17 @@ Chronographer.prototype.fullscreen = function() {
     } else if (this.container.webkitRequestFullscreen) {
         this.container.webkitRequestFullscreen();
     }
+
+    var targetOrientation = ['landscape-primary', 'landscape-secondary'];
+    if (screen.lockOrientation) {
+        screen.lockOrientation(targetOrientation);
+    } else if (screen.mozLockOrientation) {
+        screen.mozLockOrientation(targetOrientation);
+    } else if (screen.msLockOrientation) {
+        screen.msLockOrientation(targetOrientation);
+    } else if (screen.orientation.lock) {
+        screen.orientation.lock(targetOrientation);
+    }
 };
 
 
@@ -92,6 +102,7 @@ Chronographer.prototype.setupScene = function() {
       window.innerWidth / window.innerHeight, 1, 30000);
     this.camera.position.z = -(this.radius * 2.5);
     this.camera.position.y = this.radius * 1.5;
+    this.camera.lookAt(this.scene.position);
 
     this.controls = new THREE.OrbitControls(this.camera,
       this.renderer.domElement);
@@ -109,8 +120,8 @@ Chronographer.prototype.setupScene = function() {
     this.clock = new THREE.Clock();
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
-    // window.addEventListener('deviceorientation',
-    //                         this.setOrientationControls.bind(this), false);
+    window.addEventListener('deviceorientation',
+                            this.setOrientationControls.bind(this), false);
 };
 
 
@@ -125,15 +136,15 @@ Chronographer.prototype.update = function() {
         this.followLine.update(dt);
     }
 
-    this.controls.update();
+    this.controls.update(dt);
     this.render();
 };
 
 
 Chronographer.prototype.render = function() {
     this.renderer.clear();
-    this.renderer.render(this.scene, this.camera);
-    // this.effect.render(this.scene, this.camera);
+    // this.renderer.render(this.scene, this.camera);
+    this.effect.render(this.scene, this.camera);
 };
 
 
