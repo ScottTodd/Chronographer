@@ -1,0 +1,102 @@
+#chrono-controls {
+  /* anchor to the bottom */
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  margin: 0px;
+  height: 32px;
+}
+
+#chrono-playPauseButton {
+  text-align: center;
+  position: relative;
+  height: 20px;
+  bottom: 6px;
+}
+
+#chrono-timeInput {
+  /* appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #4E4E4E;
+  border: 2px solid;
+  border-color: #191919;
+  /* center horizontally */
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0px;
+  right: 0px;
+}
+
+#chrono-timeInput::-webkit-slider-thumb {
+  /* appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #B7B7B7;
+  border: 2px solid;
+  border-color: #191919;
+  /* size */
+  width: 10px;
+  height: 20px;
+}
+
+#chrono-dateBox {
+  color: #E1D6C1;
+  position: absolute;
+  margin-left: 10px;
+  display: inline-block;
+  height: 20px;
+  bottom: 6px;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,gBAAiB;;EAEb,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;EACX,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,GAAG;EACX,MAAM,EAAE,IAAI;;;AAGhB,uBAAwB;EACpB,UAAU,EAAE,MAAM;EAClB,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG;;;AAGf,iBAAkB;;EAEd,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;;EAGrB,KAAK,EAAE,GAAG;EACV,WAAW,EAAE,IAAI;EACjB,YAAY,EAAE,IAAI;EAClB,IAAI,EAAE,GAAG;EACT,KAAK,EAAE,GAAG;;;AAGd,uCAAwC;;EAEpC,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;;EAGrB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;;;AAGhB,eAAgB;EACZ,KAAK,EAAE,OAAO;EACd,QAAQ,EAAE,QAAQ;EAClB,WAAW,EAAE,IAAI;EACjB,OAAO,EAAE,YAAY;EACrB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG",
+"sources": ["../chronocontrols.scss"],
+"names": [],
+"file": "chronocontrols.css"
+}
+#cgr-chronoData {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,eAAgB;EACZ,QAAQ,EAAE,KAAK;EACf,IAAI,EAAE,GAAG;EACT,GAAG,EAAE,GAAG",
+"sources": ["../chronodata.scss"],
+"names": [],
+"file": "chronodata.css"
+}
+body {
+  background-color: #222222;
+  color: #DDDDDD;
+  margin: 0;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,IAAK;EACD,gBAAgB,EAAE,OAAO;EACzB,KAAK,EAAE,OAAO;EACd,MAAM,EAAE,CAAC",
+"sources": ["../main.scss"],
+"names": [],
+"file": "main.css"
+}
+#cgr-worldMap {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  fill: none;
+  z-index: -1;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,aAAc;EACV,QAAQ,EAAE,KAAK;EACf,IAAI,EAAE,GAAG;EACT,GAAG,EAAE,GAAG;EACR,IAAI,EAAE,IAAI;EACV,OAAO,EAAE,EAAE",
+"sources": ["../worldmap.scss"],
+"names": [],
+"file": "worldmap.css"
+}

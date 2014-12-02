@@ -2,7 +2,6 @@ doc
 node_modules
 public
 private
-dist
 *~
 *.synctex.gz
 *.aux
