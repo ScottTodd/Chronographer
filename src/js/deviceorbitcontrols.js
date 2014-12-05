@@ -12,6 +12,7 @@ var DeviceOrbitControls = function(camera, radius) {
 
 DeviceOrbitControls.prototype.setOrientation = function(event) {
     if (!this.enabled) { return; }
+
     var deg2rad = Math.PI / 180.0;
     var alpha = -((event.alpha) * deg2rad);
     var gamma =  ((event.gamma + 90) * deg2rad);
