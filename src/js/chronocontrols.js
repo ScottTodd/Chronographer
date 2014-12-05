@@ -8,13 +8,18 @@ var ChronoControls = function(chronographer, container) {
 
     // Create controls from imported html.
     var content = document.querySelector('link[rel="import"]').import;
-    var controls = content.getElementById('chrono-controls');
+    var controls = content.getElementById('chrono-controls-root');
     container.appendChild(controls);
 
-    this.playPause = document.getElementById('chrono-playPauseButton');
-    this.enterVR   = document.getElementById('chrono-enterVRButton');
-    this.timeInput = document.getElementById('chrono-timeInput');
-    this.dateBox   = document.getElementById('chrono-dateBox');
+    this.controls   = document.getElementById('chrono-controls');
+    this.vrControls = document.getElementById('chrono-vr-controls');
+
+    this.playPause  = document.getElementById('chrono-playPauseButton');
+    this.enterVR    = document.getElementById('chrono-enterVRButton');
+    this.timeInput  = document.getElementById('chrono-timeInput');
+    this.dateBox    = document.getElementById('chrono-dateBox');
+    this.vrDateBox1 = document.getElementById('chrono-vr-dateBox-1');
+    this.vrDateBox2 = document.getElementById('chrono-vr-dateBox-2');
 
     // Listen to play/pause events (button click and space bar).
     this.playPause.addEventListener('click', this.handlePlayPause.bind(this),
@@ -70,7 +75,10 @@ ChronoControls.prototype.setInputTime = function(inputTime) {
 ChronoControls.prototype.updateTimeDisplay = function() {
     // var date = new Date(parseFloat(this.timeInput.value));
     // this.dateBox.textContent = this.getFormattedDate(date);
-    this.dateBox.textContent = Math.round(parseFloat(this.timeInput.value));
+    var value = Math.round(parseFloat(this.timeInput.value));
+    this.dateBox.textContent = value;
+    this.vrDateBox1.textContent = value;
+    this.vrDateBox2.textContent = value;
 };
 
 
@@ -101,9 +109,8 @@ ChronoControls.prototype.handleEnterVR = function() {
     this.paused = false;
     this.loop = true;
 
-    this.playPause.style.display = 'none';
-    this.timeInput.style.display = 'none';
-    this.enterVR.style.display = 'none';
+    this.controls.style.display = 'none';
+    this.vrControls.style.display = 'inline-block';
 };
 
 
@@ -113,9 +120,8 @@ ChronoControls.prototype.handleLeaveVR = function() {
     this.paused = true;
     this.loop = false;
 
-    this.playPause.style.display = 'inline-block';
-    this.timeInput.style.display = 'inline-block';
-    this.enterVR.style.display = 'inline-block';
+    this.controls.style.display = 'inline-block';
+    this.vrControls.style.display = 'none';
 };
 
 

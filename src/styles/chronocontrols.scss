@@ -59,14 +59,31 @@
     height: 30px;
 }
 
-#chrono-dateBox {
+.chrono-date {
     position: absolute;
     display: inline-block;
-
+    color: #E1D6C1;
+    font-size: 34px;
     width: 10%;
 }
 
-.chrono-date {
-    color: #E1D6C1;
-    font-size: 34px;
+.chrono-vr-date {
+    margin-top: 25%;
+}
+
+#chrono-vr-controls {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin-left: -50%;
+    display: none;
+    pointer-events: none;
+}
+
+#chrono-vr-dateBox-1 {
+    margin-left: 25%;
+}
+
+#chrono-vr-dateBox-2 {
+    margin-left: 75%;
 }
