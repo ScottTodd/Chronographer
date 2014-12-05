@@ -62,22 +62,29 @@ Chronographer.prototype.onWindowResize = function() {
 
 
 Chronographer.prototype.setOrientationControls = function() {
-    this.controls = new DeviceOrbitControls(this.camera, this.radius * 2.0);
+    this.controls = this.deviceOrbitControls;
+    this.orbitControls.enabled = false;
+    this.deviceOrbitControls.enabled = true;
+};
 
-    window.removeEventListener('deviceorientation',
-                               this.setOrientationControls);
+
+Chronographer.prototype.setOrbitControls = function() {
+    this.controls = this.orbitControls;
+    this.orbitControls.enabled = true;
+    this.deviceOrbitControls.enabled = false;
 };
 
 
 Chronographer.prototype.enterVR = function() {
-    this.fullscreen();
-
     this.vr = true;
+    this.fullscreen();
+    this.setOrientationControls();
 };
 
 
 Chronographer.prototype.leaveVR = function() {
     this.vr = false;
+    this.setOrbitControls();
 };
 
 
@@ -92,7 +99,7 @@ Chronographer.prototype.fullscreen = function() {
         this.container.webkitRequestFullscreen();
     }
 
-    var targetOrientation = ['landscape-primary'];
+    var targetOrientation = ['landscape-primary', 'landscape-secondary'];
     if (screen.lockOrientation) {
         screen.lockOrientation(targetOrientation);
     } else if (screen.mozLockOrientation) {
@@ -114,11 +121,16 @@ Chronographer.prototype.setupScene = function() {
     this.camera.position.y = this.radius * 1.2;
     this.camera.lookAt(this.scene.position);
 
-    this.controls = new THREE.OrbitControls(this.camera,
-      this.renderer.domElement);
-    this.controls.addEventListener('change', this.render.bind(this));
-    this.controls.noPan = true;
-    this.controls.rotateSpeed = 0.5;
+    this.deviceOrbitControls = new DeviceOrbitControls(this.camera,
+                                                       this.radius * 2.0);
+
+    this.orbitControls = new THREE.OrbitControls(this.camera,
+                                                 this.renderer.domElement);
+    this.orbitControls.addEventListener('change', this.render.bind(this));
+    this.orbitControls.noPan = true;
+    this.orbitControls.rotateSpeed = 0.5;
+
+    this.setOrbitControls();
 
     var ambientLight = new THREE.AmbientLight(0x888888);
     this.scene.add(ambientLight);
@@ -130,8 +142,6 @@ Chronographer.prototype.setupScene = function() {
     this.clock = new THREE.Clock();
 
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
-    window.addEventListener('deviceorientation',
-                            this.setOrientationControls.bind(this), false);
 };
 
 
