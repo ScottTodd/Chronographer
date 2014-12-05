@@ -34,7 +34,7 @@ Earth.prototype.setScene = function(scene) {
 
 
 Earth.prototype.loadTexture = function(textureName) {
-  // TODO: customize path or images, this relative path is nasty.
+    // TODO: customize path or images, this relative path is nasty.
     return THREE.ImageUtils.loadTexture('../../dist/images/' + textureName);
 };
 

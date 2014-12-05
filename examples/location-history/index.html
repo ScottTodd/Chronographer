@@ -17,33 +17,51 @@
 
 <body>
 
+<form action='javascript:upload()' id='upload-form'>
+  Select a file: <input type='file' name='data' id='file-upload'>
+  <input type='submit'>
+</form>
+
 <div id='container'></div>
 
 <script>
   var chronographer;
   var stats;
 
-  window.onload = function() {
-    init();
-    animate();
+  function upload() {
+    var file = document.getElementById('file-upload').files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function() {
+      var content = JSON.parse(this.result);
+
+      var uploadForm = document.getElementById('upload-form');
+      uploadForm.style.display = 'none';
+
+      init(content);
+      animate();
+    }
+
+    reader.readAsText(file);
   };
 
-  function init() {
+  function init(dataJSON) {
     var opts = {
-      percentHighlightRange: 0.01,
+      dataJSON: dataJSON,
+      percentHighlightRange: 0.002,
       minAlpha: 1.0,
       maxAlpha: 1.0,
       minColor: new THREE.Color(0x7EC5D1),
       maxColor: new THREE.Color(0xE32402),
-      minSize: 6.0,
-      maxSize: 16.0,
-      playTime: 20.0,
-      followLine: true,
+      minSize: 4.0,
+      maxSize: 24.0,
+      playTime: 40.0,
       dateFormat: 'timestamp'
     };
 
     var container = document.getElementById('container');
-    chronographer = new Chronographer(container, 'data/private/location.json', opts);
+    chronographer = new Chronographer(container, opts);
 
     // stats = new Stats();
     // stats.domElement.style.position = 'absolute';

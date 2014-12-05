@@ -7,7 +7,7 @@ var Earth = require('./Earth');
 var FollowLine = require('./FollowLine');
 
 
-var Chronographer = function(container, data, opts) {
+var Chronographer = function(container, opts) {
     if (!Detector.webgl) { Detector.addGetWebGLMessage(); }
 
     this.container = container;
@@ -20,7 +20,7 @@ var Chronographer = function(container, data, opts) {
     this.setupRenderer();
     this.setupScene();
 
-    this.chronoData = new ChronoData(data, this.radius, opts);
+    this.chronoData = new ChronoData(this.radius, opts);
     this.chronoData.setScene(this.scene);
     var minTime = this.chronoData.getMinTime();
     var maxTime = this.chronoData.getMaxTime();

@@ -4,16 +4,16 @@ var chronodataVertexShader = require('./shaders/chronodataVertex');
 var chronodataFragmentShader = require('./shaders/chronodataFragment');
 
 
-var ChronoData = function(dataURL, radius, opts) {
+var ChronoData = function(radius, opts) {
     this.radius = radius;
 
     function loadText(url) {
-      var request = new XMLHttpRequest();
-      request.open('GET', url, false); // Synchronous.
-      request.overrideMimeType('text/plain');
-      request.send();
+        var request = new XMLHttpRequest();
+        request.open('GET', url, false); // Synchronous.
+        request.overrideMimeType('text/plain');
+        request.send();
 
-      return request.responseText;
+        return request.responseText;
     }
 
     this.data = [];
@@ -23,8 +23,14 @@ var ChronoData = function(dataURL, radius, opts) {
     this.maxTime = 0;
 
     // Load data from a json file.
-    var jsonData = JSON.parse(loadText(dataURL));
-    var locations = jsonData.locations;
+    var locations = [];
+    if (opts && opts.dataURL) {
+        var jsonData = JSON.parse(loadText(opts.dataURL));
+        locations = jsonData.locations;
+    }
+    if (opts && opts.dataJSON) {
+        locations = opts.dataJSON.locations;
+    }
 
     for (var i = 0; i < locations.length; ++i) {
         var timestampMs = parseFloat(locations[i].timestampMs) ||

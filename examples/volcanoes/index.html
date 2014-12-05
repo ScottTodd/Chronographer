@@ -30,6 +30,7 @@
 
   function init() {
     var opts = {
+      dataURL: 'data/volcanoes_1800-2014.json',
       percentHighlightRange: 0.10,
       minAlpha: 1.0,
       maxAlpha: 1.0,
@@ -42,7 +43,7 @@
     };
 
     var container = document.getElementById('container');
-    chronographer = new Chronographer(container, 'data/volcanoes_1800-2014.json', opts);
+    chronographer = new Chronographer(container, opts);
 
     // stats = new Stats();
     // stats.domElement.style.position = 'absolute';
