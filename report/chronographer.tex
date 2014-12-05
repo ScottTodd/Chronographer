@@ -24,19 +24,19 @@
 \TOGdataURL{}
 \TOGcodeURL{}
 
-\title{Chronographer - subtitle}
+\title{Chronographer - Location History Visualization}
 
 
 \author{Scott Todd\thanks{email: todds@rpi.edu}}
 \pdfauthor{Scott Todd}
 
-\keywords{Data Visualization, Geography, Virtual Reality}
+\keywords{Data Visualization, Geographic Data, Virtual Reality}
 
 \begin{document}
 
 \teaser{
-  % \includegraphics[height=180px]{images/green_bunny}
-  % \caption{The Stanford bunny rendered with 3 layers of brush strokes.}
+  \includegraphics[height=180px]{images/chronographer.png}
+  \caption{Visualizing volcanic eruptions.}
 }
 
 \maketitle
@@ -44,7 +44,18 @@
 
 \begin{abstract}
 
-Abstract.
+I created a geographic location history visualization tool titled Chronographer
+that explores virtual reality interaction as a data analysis aid. I used
+three.js \cite{three.js}, the device orientation API
+\cite{Mozilla:DeviceOrientation}, and the Google Cardboard
+\cite{Google:Cardboard} viewer to construct this visualization, which is hosted
+at \url{http://scotttodd.github.io/Chronographer/}. I visualized location
+history data exported from my Google account using Google Takeout
+\cite{Google:Takeout} as well as volcanic eruption data from NOAA
+\cite{NOAA:Volcano}. I went through several design iterations and concluded that
+this style of visualization is interesting but not currently effective as a
+tool for learning from geographic data sets. I conducted informal user testing
+partway through the project but did not perform a rigorous user study.
 
 \end{abstract}
 
@@ -60,12 +71,98 @@ Abstract.
 
 \section{Introduction}
 
-Introduction.
+Geographic location history data sets combine spatial information which demands
+context with chronological information which benefits greatly from interaction
+or animation. Existing map-based tools present geographic data in an
+understandable format but they each rely on a projection that introduces an
+extra level of processing in order to relate the data to the physical world.
+Virtual reality has been growing in popularity and technical maturity in recent
+years and offers the opportunity to connect people to data in ways not possible
+before. I wanted to test the utility of virtual reality in helping people
+understand these data sets.
+
+The representation of the time axis is also important for data analysis.
+Several techniques have been researched in the past which handle user control
+over the time axis differently.
+
+Virtual reality devices such as the Oculus Rift and Sony's Project Morpheus are
+currently in active development. Screen, positional tracking, and rendering
+technologies have advanced to the point where immersive virtual reality is
+nearly within reach for consumer-grade projects. The Google Cardboard takes this
+a step further and leverages current generation smart phones, which are packed
+with sensors and high resolution screens already, to deliver an affordable
+virtual reality solution that hobbyists and consumers can easily use.
+
+Virtual reality for web browsers is a recent extension of these new
+technologies, so support and stability are both limited. The device orientation
+API is experimental and has several shortcomings, but it may eventually be
+replaced with official browser support through a technology currently being
+named WebVR.
 
 
 \subsection{Related Work}
 
-Related Work. \cite{White}
+\subsection{Technical References}
+
+``What is Spatial History'' by Richard White \cite{White} details efforts to
+chronicle history through data visualization, making sense of large data sets
+through visual media, rather than through words alone as traditional history
+textbooks do. He argues that spatial relations are established through movement
+- movement of people, goods, and information. He discusses
+``relational space'', where locations are closer at different points during a
+day due to traffic and other relative, modern factors. He also concludes that
+visualizations are a means of doing research and generating questions that may
+have otherwise gone unasked, not a method to communicate findings discovered
+through other means.
+
+The DimpVis system \cite{10.1109/TVCG.2014.2346250} explores a novel method of
+interacting with data points on two-dimensional plots with time as a third
+axis. Where time is normally controlled by a slider, it allows for users to
+drag points along hint paths to move through time in either direction.
+
+\subsection{Further Inspiration}
+
+GitHub user @theopolisme created a website that lets you visualize your Google
+Location History using an interactive heatmap
+\cite{location-history-visualizer}. In his visualization, data points from all
+time values are compressed onto a single map which features zoom and pan
+controls.
+
+This blog post \cite{VR:BigData} argues that good data visualization tools
+should consider human visual perception and give insight into the unknown, not
+the already-understood. It explains how DARPA used the Oculus Rift to visualize
+three-dimensional network simulations and how engineers at Caltech used virtual
+worlds such as Second Life and the Unity3D game engine as data visualization
+platforms.
+
+
+
+\section{Development}
+
+\subsection{Initial Ideas}
+
+I originally planned to build a two dimensional map interface that would blend
+a set of data points across time ranges together. At this point, I was inspired
+by @theopolisme's Location History Visualizer and had recently completed another
+map-based visualization using d3.js \cite{D3.js}. Because of my familiarity with
+d3.js and three.js, I hoped to combine the powerful WebGL rendering of three.js
+with the convenient map projection and rendering of d3.js to visualize my own
+location history. I had also been searching for a reason to experiment with the
+Google Cardboard, so I worked that into my plans.
+
+My basic visual design centered around displaying data points above a map and
+using additive or alpha blending to show general regions where points were
+focused. As the visualization time changed, data points would fade in and out.
+I used a traditional slider to control the visualization time, which could be
+set to play automatically or could be manually controlled via mouse or touch.
+
+\subsection{First Extensions}
+
+
+\subsection{Final Details}
+
+
+\section{Feedback}
 
 \section{Results}
 
