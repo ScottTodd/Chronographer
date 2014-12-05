@@ -211,7 +211,7 @@ camera-facing) particles (see Algorithm 1).
   \centering
   \includegraphics[width=3.4in]{images/initial_us_map}
   \caption{Initial map of the USA with data point particles. Note the slider at
-           the bottom of the screen.}
+           the bottom of the screen}
 \end{figure}
 
 \subsection{First Extensions}
@@ -223,13 +223,13 @@ projection that would have potential as an effective virtual reality view.
 \begin{figure}
   \centering
   \includegraphics[width=3.0in]{images/mercator_projection_with_particles}
-  \caption{Mercator projection with data point particles.}
+  \caption{Mercator projection with data point particles}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=3.0in]{images/orthographic_projection_with_particles}
-  \caption{Orthographic projection with data point particles.}
+  \caption{Orthographic projection with data point particles}
 \end{figure}
 
 Up until this point, I had been combining d3.js and three.js and used an awkward
@@ -272,7 +272,7 @@ website. The bump map was roughly an elevation map of the world and the specular
 map was roughly a water coverage map. My new data point positioning algorithm
 using only three.js is outlined in Algorithm 3. With this new positioning,
 the bottleneck that used to exist was resolved, so I could now render those
-original 420,000 data points my location history file at 60fps.
+original 420,000 data points my location history file at 60 frames per second.
 
 \RestyleAlgo{boxruled}
 \begin{algorithm}
@@ -300,21 +300,20 @@ original 420,000 data points my location history file at 60fps.
 \begin{figure}
   \centering
   \includegraphics[width=3.0in]{images/threejs_sphere_earth}
-  \caption{Sphere and particles rendered entirely with three.js.}
+  \caption{Sphere and particles rendered entirely with three.js}
 \end{figure}
 
 \subsection{Virtual Reality}
 
-Virtual reality display and interaction were implemented with the help of the
-device orientation API, the deviceorientation event, and stereo rendering
-effects. The device orientation API exposes alpha, beta, and gamma values
-representing the orientation of an input device in 3D space through the
-deviceorientation JavaScript event. The meaning of these values seems to change
-based on the layout of the device (portrait or landscape in the case of my
-phone), so I fixed the layout to landscape mode using
-``screen.orientation.lock()''. I used these angle values to orbit the camera
-around the central world. In this way, users can look around a virtual world
-centered in front of their phone.
+Virtual reality display and interaction were implemented as a secondary display
+mode with the help of the device orientation API and stereo rendering effects.
+The device orientation API exposes alpha, beta, and gamma values representing
+the orientation of an input device in 3D space through the deviceorientation
+JavaScript event. The meaning of these values seems to change based on the
+layout of the device (portrait or landscape in the case of my phone), so I fixed
+the layout to landscape mode using ``screen.orientation.lock()''. I used these
+angle values to orbit the camera around the central world. In this way, users
+can look around a virtual world centered in front of their phone.
 
 My Samsung Galaxy S4 phone has several known issues with its magnetometer
 (interference) and gyroscope (calibration), making integration with the Google
@@ -326,14 +325,14 @@ future with WebVR and better hardware.
 I made use of a stereo rendering effect for three.js which does a screen-space
 transformation of each frame before sending it to the framebuffer, splitting it
 into a stereo image (one copy of the image per eye, see Figure 6). There is an
-``Oculus Rift Effect'' for three.js which also applies lenes distortion and
+``Oculus Rift Effect'' for three.js which also applies lens distortion and
 chromatic aberration to the image, but I was unable to run that effect on my
 phone.
 
 \begin{figure}
   \centering
   \includegraphics[width=3.4in]{images/vr}
-  \caption{Fullscreen virtual reality mode using ``StereoEffect''.}
+  \caption{Fullscreen virtual reality mode using ``StereoEffect''}
 \end{figure}
 
 User interfaces in virtual reality are different from their traditional
@@ -346,14 +345,53 @@ visualization time is paused until further input is received.
 
 \section{User Feedback}
 
+I collected informal user feedback from classmates in Interactive Visualization
+and from friends at RPI. Generally, users understood the purpose of the
+visualization but had difficulty picking out and focusing on details. In
+particular, it was confusing how many points were highlighted at the same time
+for the location history data set.
+
+Many users recommended incorporating map data, labels, or at least higher
+resolution textures. While I wanted to connect to a map service, I felt that
+this was out of scope for this project given the time provided. I was able to
+find higher resolution textures and did not include a zoom option for the
+virtual reality mode.
+
+Initially, I faded the alpha value of particle images as they moved away from
+the visualization time, which made it difficult to see trends in the data.
+In response to this, I implemented HSV color and size interpolation.
+
+A few users suggested hiding the Earth, making it transparent, or somehow
+making data points visible through it. This was particularly relevant to the
+volcanic eruptions dataset, since eruptions could be occurring on the opposite
+side of the world and those points would not be visible.
+
 \subsection{Follow Line}
 
+To aid detail focus and point discovery, I drew a spline between the latest
+data points in order. I called this a ``Follow Line'' (see Figure 7). As the
+visualization time passed by a data point, that point was added to the line.
+This served to connect points across time visually and could show when points
+moved to the other side of the Earth.
 
+This may have helped with the location history dataset, since those points
+followed a clear chronological ordering, but the spline merely connected points
+directly, so it could clip through the world. I am confident that I could
+force the spline to follow a smooth path above the surface of the Earth, but
+that will be left for future work.
 
-\section{Results}
+After implementing this, I realized a critical difference between the location
+history data and the volcanic eruptions data - volcanic eruptions are not
+temporally related (in the sense that an eruption in one year should be
+connected to an eruption in the next) while location history positions are.
+Because of this, I disabled the ``Follow Line'' on the volcanic eruption dataset
+and eventually dropped it from the location history dataset as well.
 
-Results.
-
+\begin{figure}
+  \centering
+  \includegraphics[width=3.0in]{images/follow_line}
+  \caption{``Follow Line'' effect in use}
+\end{figure}
 
 \section{Limitations and Future Work}
 
