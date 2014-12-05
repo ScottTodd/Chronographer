@@ -99,7 +99,7 @@ Chronographer.prototype.fullscreen = function() {
         this.container.webkitRequestFullscreen();
     }
 
-    var targetOrientation = ['landscape-primary', 'landscape-secondary'];
+    var targetOrientation = ['landscape'];
     if (screen.lockOrientation) {
         screen.lockOrientation(targetOrientation);
     } else if (screen.mozLockOrientation) {
