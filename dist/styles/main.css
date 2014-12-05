@@ -104,15 +104,21 @@
 "names": [],
 "file": "chronodata.css"
 }
+html, body {
+  min-height: 100%;
+  height: 100%;
+}
+
 body {
   background-color: #222222;
+  background-image: url("../../third_party/images/cartographer.png");
   color: #DDDDDD;
   margin: 0;
 }
 
 {
 "version": 3,
-"mappings": "AAAA,IAAK;EACD,gBAAgB,EAAE,OAAO;EACzB,KAAK,EAAE,OAAO;EACd,MAAM,EAAE,CAAC",
+"mappings": "AAAA,UAAW;EACT,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,IAAI;;;AAGd,IAAK;EACD,gBAAgB,EAAE,OAAO;EACzB,gBAAgB,EAAE,gDAAgD;EAClE,KAAK,EAAE,OAAO;EACd,MAAM,EAAE,CAAC",
 "sources": ["../main.scss"],
 "names": [],
 "file": "main.css"
