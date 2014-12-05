@@ -44,8 +44,8 @@ Chronographer.prototype.setupRenderer = function() {
     this.container.appendChild(this.renderer.domElement);
     this.renderer.domElement.id = 'cgr-chronoData';
 
-    // this.effect = new THREE.StereoEffect(this.renderer);
-    this.effect = new THREE.OculusRiftEffect(this.renderer);
+    this.effect = new THREE.StereoEffect(this.renderer);
+    // this.effect = new THREE.OculusRiftEffect(this.renderer);
     this.effect.setSize(this.width, this.height);
 };
 
