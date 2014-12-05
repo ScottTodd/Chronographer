@@ -33,7 +33,7 @@ var ChronoControls = function(chronographer, container, opts) {
     }.bind(this);
 
     // Also update if the input slider is changed directly.
-    this.timeInput.addEventListener('change', this.updateTimeDisplay.bind(this),
+    this.timeInput.addEventListener('input', this.manualUpdateTime.bind(this),
                                     false);
 
     this.enterVR.addEventListener('click', this.handleEnterVR.bind(this),
@@ -61,6 +61,12 @@ ChronoControls.prototype.setTimeRange = function(minTime, maxTime) {
     this.timeInput.setAttribute('min', minTime);
     this.timeInput.setAttribute('max', maxTime);
     this.setInputTime(minTime);
+};
+
+
+ChronoControls.prototype.manualUpdateTime = function() {
+    this.setPaused(true);
+    this.updateTimeDisplay();
 };
 
 
@@ -100,11 +106,16 @@ ChronoControls.prototype.getFormattedDate = function(date) {
 
 ChronoControls.prototype.handlePlayPause = function() {
     this.loop = false;
-    this.paused = !this.paused;
+    this.setPaused(!this.paused);
     if (parseFloat(this.timeInput.value) >= this.maxTime) {
-        this.paused = true;
+        this.setPaused(true);
         this.setInputTime(this.minTime);
     }
+};
+
+
+ChronoControls.prototype.setPaused = function(paused) {
+    this.paused = paused;
     this.playPause.value = this.paused ? 'Play' : 'Pause';
 };
 
@@ -112,7 +123,7 @@ ChronoControls.prototype.handlePlayPause = function() {
 ChronoControls.prototype.handleEnterVR = function() {
     this.chronographer.enterVR();
 
-    this.paused = false;
+    this.setPaused(false);
     this.loop = true;
 
     this.controls.style.display = 'none';
@@ -123,7 +134,7 @@ ChronoControls.prototype.handleEnterVR = function() {
 ChronoControls.prototype.handleLeaveVR = function() {
     this.chronographer.leaveVR();
 
-    this.paused = true;
+    this.setPaused(true);
     this.loop = false;
 
     this.controls.style.display = 'inline-block';
@@ -154,7 +165,8 @@ ChronoControls.prototype.update = function(dt) {
             if (this.loop) {
                 this.setInputTime(this.minTime);
             } else {
-                this.paused = true;
+                this.setPaused(true);
+                this.playPause.value = 'Restart';
             }
         }
     }
