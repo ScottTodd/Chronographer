@@ -174,7 +174,8 @@ using additive or alpha blending to show general regions where points were
 focused. As the visualization time changed, data points would fade in and out.
 I used a traditional slider to control the visualization time, which could be
 set to play automatically or could be manually controlled via mouse or touch.
-This initial design can be seen in Figure 2.
+Next to the slider, I placed the current time and a play/pause button. This
+initial design can be seen in Figure 2.
 
 I used a particle system to represent data points, with each data point having
 a single particle in the particle system to represent it. These particles would
@@ -304,8 +305,46 @@ original 420,000 data points my location history file at 60fps.
 
 \subsection{Virtual Reality}
 
+Virtual reality display and interaction were implemented with the help of the
+device orientation API, the deviceorientation event, and stereo rendering
+effects. The device orientation API exposes alpha, beta, and gamma values
+representing the orientation of an input device in 3D space through the
+deviceorientation JavaScript event. The meaning of these values seems to change
+based on the layout of the device (portrait or landscape in the case of my
+phone), so I fixed the layout to landscape mode using
+``screen.orientation.lock()''. I used these angle values to orbit the camera
+around the central world. In this way, users can look around a virtual world
+centered in front of their phone.
 
-\section{Feedback}
+My Samsung Galaxy S4 phone has several known issues with its magnetometer
+(interference) and gyroscope (calibration), making integration with the Google
+Cardboard unreliable. Newer phones suffer less from these issues though, as
+these technologies become more well established. Additionally, web browsers are
+known to send laggy and noisy orientation information, which may be fixed in the
+future with WebVR and better hardware.
+
+I made use of a stereo rendering effect for three.js which does a screen-space
+transformation of each frame before sending it to the framebuffer, splitting it
+into a stereo image (one copy of the image per eye, see Figure 6). There is an
+``Oculus Rift Effect'' for three.js which also applies lenes distortion and
+chromatic aberration to the image, but I was unable to run that effect on my
+phone.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=3.4in]{images/vr}
+  \caption{Fullscreen virtual reality mode using ``StereoEffect''.}
+\end{figure}
+
+User interfaces in virtual reality are different from their traditional
+counterparts, due to the level of engagement and differing input mechanisms.
+Because of this, I increased the size of the date display and hid the time
+slider, instead opting to autoplay through the time and loop around at the end.
+When exiting from virtual reality mode, the standard controls return and the
+visualization time is paused until further input is received.
+
+
+\section{User Feedback}
 
 \subsection{Follow Line}
 
