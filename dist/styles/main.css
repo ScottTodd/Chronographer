@@ -1,60 +1,92 @@
-#chrono-controls {
+.chrono-controls-outer {
   /* anchor to the bottom */
   position: absolute;
   bottom: 0px;
   width: 100%;
   margin: 0px;
-  height: 32px;
+  height: 80px;
 }
 
-#chrono-playPauseButton {
-  text-align: center;
+.chrono-controls-inner {
   position: relative;
-  height: 20px;
-  bottom: 6px;
+  width: 60%;
+  margin: auto;
 }
 
-#chrono-timeInput {
-  /* appearance */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: #4E4E4E;
-  border: 2px solid;
-  border-color: #191919;
-  /* center horizontally */
-  width: 40%;
+.chrono-center-horizontal {
   margin-left: auto;
   margin-right: auto;
   left: 0px;
   right: 0px;
 }
 
-#chrono-timeInput::-webkit-slider-thumb {
-  /* appearance */
+.chrono-button {
+  width: 120px;
+  background-color: #4E4E4E;
+  border: 2px solid;
+  border-color: #191919;
+  color: #9B9B9B;
+  font-size: 20px;
+  position: relative;
+  margin: 4px;
+}
+
+#chrono-timeInput {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-color: #B7B7B7;
+  background-color: #4E4E4E;
   border: 2px solid;
   border-color: #191919;
-  /* size */
-  width: 10px;
-  height: 20px;
+  width: 80%;
+  position: absolute;
+  height: auto;
+  bottom: 0px;
 }
 
-#chrono-dateBox {
-  color: #E1D6C1;
+#chrono-timeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #9B9B9B;
+  border: 2px solid;
+  border-color: #191919;
+  width: 10px;
+  height: 30px;
+}
+
+.chrono-date {
   position: absolute;
-  margin-left: 10px;
   display: inline-block;
-  height: 20px;
-  bottom: 6px;
+  color: #E1D6C1;
+  font-size: 34px;
+  width: 10%;
+}
+
+.chrono-vr-date {
+  margin-top: 25%;
+}
+
+#chrono-vr-controls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-left: -50%;
+  display: none;
+  pointer-events: none;
+}
+
+#chrono-vr-dateBox-1 {
+  margin-left: 21%;
+}
+
+#chrono-vr-dateBox-2 {
+  margin-left: 71%;
 }
 
 {
 "version": 3,
-"mappings": "AAAA,gBAAiB;;EAEb,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;EACX,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,GAAG;EACX,MAAM,EAAE,IAAI;;;AAGhB,uBAAwB;EACpB,UAAU,EAAE,MAAM;EAClB,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG;;;AAGf,iBAAkB;;EAEd,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;;EAGrB,KAAK,EAAE,GAAG;EACV,WAAW,EAAE,IAAI;EACjB,YAAY,EAAE,IAAI;EAClB,IAAI,EAAE,GAAG;EACT,KAAK,EAAE,GAAG;;;AAGd,uCAAwC;;EAEpC,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;;EAGrB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;;;AAGhB,eAAgB;EACZ,KAAK,EAAE,OAAO;EACd,QAAQ,EAAE,QAAQ;EAClB,WAAW,EAAE,IAAI;EACjB,OAAO,EAAE,YAAY;EACrB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG",
+"mappings": "AAAA,sBAAuB;;EAEnB,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;EACX,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,GAAG;EACX,MAAM,EAAE,IAAI;;;AAGhB,sBAAuB;EACnB,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,IAAI;;;AAGhB,yBAA0B;EACtB,WAAW,EAAE,IAAI;EACjB,YAAY,EAAE,IAAI;EAClB,IAAI,EAAE,GAAG;EACT,KAAK,EAAE,GAAG;;;AAGd,cAAe;EACX,KAAK,EAAE,KAAK;EACZ,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EACrB,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,IAAI;EACf,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;;;AAGf,iBAAkB;EACd,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EAErB,KAAK,EAAE,GAAG;EACV,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG;;;AAGf,uCAAwC;EACpC,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EAErB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;;;AAGhB,YAAa;EACT,QAAQ,EAAE,QAAQ;EAClB,OAAO,EAAE,YAAY;EACrB,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,IAAI;EACf,KAAK,EAAE,GAAG;;;AAGd,eAAgB;EACZ,UAAU,EAAE,GAAG;;;AAGnB,mBAAoB;EAChB,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,WAAW,EAAE,IAAI;EACjB,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,IAAI;;;AAGxB,oBAAqB;EACjB,WAAW,EAAE,GAAG;;;AAGpB,oBAAqB;EACjB,WAAW,EAAE,GAAG",
 "sources": ["../chronocontrols.scss"],
 "names": [],
 "file": "chronocontrols.css"

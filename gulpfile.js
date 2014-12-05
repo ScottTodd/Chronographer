@@ -107,7 +107,7 @@ gulp.task('connect', ['styles', 'scripts', 'shaders', 'images', 'html', 'watch']
 
     gulp.src('./index.html')
       .pipe(open('', {
-        url : 'http://localhost:8080/examples/location-history/index.html'
+        url : 'http://localhost:8080/'
       }));
 });
 
