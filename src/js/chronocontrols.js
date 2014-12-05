@@ -1,6 +1,7 @@
 'use strict';
 
-var ChronoControls = function(container) {
+var ChronoControls = function(chronographer, container) {
+    this.chronographer = chronographer;
     this.totalPlayTime = 10.0;
     this.paused = true;
     this.loop = true;
@@ -11,6 +12,7 @@ var ChronoControls = function(container) {
     container.appendChild(controls);
 
     this.playPause = document.getElementById('chrono-playPauseButton');
+    this.enterVR   = document.getElementById('chrono-enterVRButton');
     this.timeInput = document.getElementById('chrono-timeInput');
     this.dateBox   = document.getElementById('chrono-dateBox');
 
@@ -27,6 +29,16 @@ var ChronoControls = function(container) {
     // Also update if the input slider is changed directly.
     this.timeInput.addEventListener('change', this.updateTimeDisplay.bind(this),
                                     false);
+
+    this.enterVR.addEventListener('click', this.handleEnterVR.bind(this),
+                                  false);
+
+    document.addEventListener('fullscreenchange',
+                              this.fullscreenChangeHandler.bind(this), false);
+    document.addEventListener('webkitfullscreenchange',
+                              this.fullscreenChangeHandler.bind(this), false);
+    document.addEventListener('mozfullscreenchange',
+                              this.fullscreenChangeHandler.bind(this), false);
 };
 
 
@@ -78,6 +90,42 @@ ChronoControls.prototype.handlePlayPause = function() {
     if (parseFloat(this.timeInput.value) >= this.maxTime) {
         this.paused = true;
         this.setInputTime(this.minTime);
+    }
+    this.playPause.value = this.paused ? 'Play' : 'Pause';
+};
+
+
+ChronoControls.prototype.handleEnterVR = function() {
+    this.chronographer.enterVR();
+
+    this.paused = false;
+    this.loop = true;
+
+    this.playPause.style.display = 'none';
+    this.timeInput.style.display = 'none';
+    this.enterVR.style.display = 'none';
+};
+
+
+ChronoControls.prototype.handleLeaveVR = function() {
+    this.chronographer.leaveVR();
+
+    this.paused = true;
+    this.loop = false;
+
+    this.playPause.style.display = 'inline-block';
+    this.timeInput.style.display = 'inline-block';
+    this.enterVR.style.display = 'inline-block';
+};
+
+
+ChronoControls.prototype.fullscreenChangeHandler = function() {
+    var fullscreen = (document.webkitIsFullScreen ||
+                      document.mozFullScreen ||
+                      document.msFullscreenElement);
+
+    if (!fullscreen) {
+        this.handleLeaveVR();
     }
 };
 

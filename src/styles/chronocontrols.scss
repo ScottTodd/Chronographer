@@ -4,25 +4,34 @@
     bottom: 0px;
     width: 100%;
     margin: 0px;
-    height: 32px;
+    height: 80px;
 }
 
 .chrono-controls-inner {
-    /* center */
     position: relative;
     width: 60%;
     margin: auto;
 }
 
-#chrono-playPauseButton {
-    text-align: center;
+.chrono-center-horizontal {
+    margin-left: auto;
+    margin-right: auto;
+    left: 0px;
+    right: 0px;
+}
+
+.chrono-button {
+    width: 120px;
+    background-color: #4E4E4E;
+    border: 2px solid;
+    border-color: #191919;
+    color: #9B9B9B;
+    font-size: 20px;
     position: relative;
-    height: 20px;
-    bottom: 6px;
+    margin: 4px;
 }
 
 #chrono-timeInput {
-    /* appearance */
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
@@ -30,12 +39,10 @@
     border: 2px solid;
     border-color: #191919;
 
-    /* center horizontally */
     width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0px;
-    right: 0px;
+    position: absolute;
+    height: auto;
+    bottom: 0px;
 }
 
 #chrono-timeInput::-webkit-slider-thumb {
@@ -43,20 +50,23 @@
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
-    background-color: #B7B7B7;
+    background-color: #9B9B9B;
     border: 2px solid;
     border-color: #191919;
 
     /* size */
     width: 10px;
-    height: 20px;
+    height: 30px;
 }
 
 #chrono-dateBox {
-    color: #E1D6C1;
     position: absolute;
-    margin-left: 10px;
     display: inline-block;
-    height: 20px;
-    bottom: 6px;
+
+    width: 10%;
+}
+
+.chrono-date {
+    color: #E1D6C1;
+    font-size: 34px;
 }

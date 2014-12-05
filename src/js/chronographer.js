@@ -15,6 +15,8 @@ var Chronographer = function(container, data, opts) {
     this.height = window.innerHeight;
     this.radius = 1000;
 
+    this.vr = false;
+
     this.setupRenderer();
     this.setupScene();
 
@@ -23,7 +25,7 @@ var Chronographer = function(container, data, opts) {
     var minTime = this.chronoData.getMinTime();
     var maxTime = this.chronoData.getMaxTime();
 
-    this.chronoControls = new ChronoControls(container);
+    this.chronoControls = new ChronoControls(this, container);
     this.chronoControls.setTimeRange(minTime, maxTime);
 
     this.earth = new Earth(this.radius);
@@ -62,12 +64,20 @@ Chronographer.prototype.onWindowResize = function() {
 Chronographer.prototype.setOrientationControls = function() {
     this.controls = new DeviceOrbitControls(this.camera, this.radius * 2.0);
 
-    this.renderer.domElement.addEventListener('click',
-                                              this.fullscreen.bind(this),
-                                              false);
-
     window.removeEventListener('deviceorientation',
                                this.setOrientationControls);
+};
+
+
+Chronographer.prototype.enterVR = function() {
+    this.fullscreen();
+
+    this.vr = true;
+};
+
+
+Chronographer.prototype.leaveVR = function() {
+    this.vr = false;
 };
 
 
@@ -82,7 +92,7 @@ Chronographer.prototype.fullscreen = function() {
         this.container.webkitRequestFullscreen();
     }
 
-    var targetOrientation = ['landscape-primary', 'landscape-secondary'];
+    var targetOrientation = ['landscape-primary'];
     if (screen.lockOrientation) {
         screen.lockOrientation(targetOrientation);
     } else if (screen.mozLockOrientation) {
@@ -143,8 +153,12 @@ Chronographer.prototype.update = function() {
 
 Chronographer.prototype.render = function() {
     this.renderer.clear();
-    // this.renderer.render(this.scene, this.camera);
-    this.effect.render(this.scene, this.camera);
+
+    if (this.vr) {
+        this.effect.render(this.scene, this.camera);
+    } else {
+        this.renderer.render(this.scene, this.camera);
+    }
 };
 
 
