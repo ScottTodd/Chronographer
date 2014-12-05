@@ -46,7 +46,6 @@
 }
 
 #chrono-timeInput::-webkit-slider-thumb {
-    /* appearance */
     -webkit-appearance: none;
        -moz-appearance: none;
             appearance: none;
@@ -54,7 +53,6 @@
     border: 2px solid;
     border-color: #191919;
 
-    /* size */
     width: 10px;
     height: 30px;
 }
@@ -81,9 +79,9 @@
 }
 
 #chrono-vr-dateBox-1 {
-    margin-left: 25%;
+    margin-left: 21%;
 }
 
 #chrono-vr-dateBox-2 {
-    margin-left: 75%;
+    margin-left: 71%;
 }

@@ -1,10 +1,11 @@
 'use strict';
 
-var ChronoControls = function(chronographer, container) {
+var ChronoControls = function(chronographer, container, opts) {
     this.chronographer = chronographer;
     this.totalPlayTime = 10.0;
     this.paused = true;
     this.loop = true;
+    this.dateFormat = (opts && opts.dateFormat) || 'string';
 
     // Create controls from imported html.
     var content = document.querySelector('link[rel="import"]').import;
@@ -73,12 +74,17 @@ ChronoControls.prototype.setInputTime = function(inputTime) {
 
 
 ChronoControls.prototype.updateTimeDisplay = function() {
-    // var date = new Date(parseFloat(this.timeInput.value));
-    // this.dateBox.textContent = this.getFormattedDate(date);
-    var value = Math.round(parseFloat(this.timeInput.value));
-    this.dateBox.textContent = value;
-    this.vrDateBox1.textContent = value;
-    this.vrDateBox2.textContent = value;
+    var dateValue = '';
+    if (this.dateFormat === 'timestamp') {
+        var date = new Date(parseFloat(this.timeInput.value));
+        dateValue = this.getFormattedDate(date);
+    } else {
+        dateValue = Math.round(parseFloat(this.timeInput.value));
+    }
+
+    this.dateBox.textContent = dateValue;
+    this.vrDateBox1.textContent = dateValue;
+    this.vrDateBox2.textContent = dateValue;
 };
 
 

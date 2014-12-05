@@ -25,7 +25,7 @@ var Chronographer = function(container, data, opts) {
     var minTime = this.chronoData.getMinTime();
     var maxTime = this.chronoData.getMaxTime();
 
-    this.chronoControls = new ChronoControls(this, container);
+    this.chronoControls = new ChronoControls(this, container, opts);
     this.chronoControls.setTimeRange(minTime, maxTime);
 
     this.earth = new Earth(this.radius);

@@ -37,22 +37,23 @@
       minColor: new THREE.Color(0x888888),
       maxColor: new THREE.Color(0xFB130D),
       minSize: 12.0,
-      maxSize: 32.0
+      maxSize: 32.0,
+      dateFormat: 'string'
     };
 
     var container = document.getElementById('container');
     chronographer = new Chronographer(container, 'data/volcanoes_1800-2014.json', opts);
 
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '0px';
-    container.appendChild(stats.domElement);
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // container.appendChild(stats.domElement);
   };
 
   function animate() {
     requestAnimationFrame(animate);
 
-    stats.update();
+    if (stats) { stats.update(); }
     chronographer.update();
   };
 </script>
