@@ -143,8 +143,18 @@ platforms.
 
 \subsection{Data}
 
-The data returned through Google Takeout is in JSON form with a simple array
-of [latitude, longitude, timestamp] triples.
+I used my personal location history data collected via Google Takeout, which is
+formatted as a simple JSON file containing an array of [latitude, longitude,
+timestamp] triples. This data file is 76 MB in size and contains nearly 420,000
+data points collected between 2013 and 2014.
+
+I also visualized the history of
+volcanic eruptions using data from the NOAA Significant Volcanic Eruptions
+Database. I coverted this data from a Microsoft Excel file into the same JSON
+format that Google Takeout uses. While this data set contains eruptions between
+the year -4000 and the present, I found that the older data was too sparse and
+made navigation via the time slider difficult, so I extracted only eruptions
+between 1800 and the present.
 
 \subsection{Initial Ideas}
 
@@ -157,6 +167,8 @@ with the convenient map projection and rendering of d3.js to visualize my own
 location history. I had also been searching for a reason to experiment with the
 Google Cardboard, so I worked that into my plans.
 
+\subsection{Initial Implementation}
+
 My basic visual design centered around displaying data points above a map and
 using additive or alpha blending to show general regions where points were
 focused. As the visualization time changed, data points would fade in and out.
@@ -168,18 +180,20 @@ I used a particle system to represent data points, with each data point having
 a single particle in the particle system to represent it. These particles would
 change their display properties based on the difference between the
 visualization time and their data point's time through computations in a set
-of custom vertex and fragment shaders (see Algorithm 1).
+of custom vertex and fragment shaders which render billboarded (always
+camera-facing) particles (see Algorithm 1).
 
 \RestyleAlgo{boxruled}
 \begin{algorithm}
 \DontPrintSemicolon
 \caption{Data Point Rendering}
-    \KwData{$visualizationTime$, $minTime$, $maxTime$, $highlightPercent$}
+    \KwData{$visualizationTime$, $minTime$, $maxTime$, $highlightPercent$,
+            transformation matrices}
     \ForEach{particle} {
         \KwData{$particleTime$, $latitude$, $longitude$}
         \begin{enumerate}
-            \item Position in object space based on $latitude$ and \\
-                $longitude$
+            \item Position in screen space based on $latitude$, \\
+                $longitude$, and transformation matrices
             \item Compute $visPercent$ as the percentage that
                 $visualizationTime$ is from $minTime$ to $maxTime$
             \item Compute $particlePercent$ as the percentage that
@@ -187,11 +201,12 @@ of custom vertex and fragment shaders (see Algorithm 1).
             \item Compute $percentDifference$ and scale by $highlightPercent$
             \item Interpolate HSV color, size, and alpha using this scaled
                 percentage
+            \item Draw particle image with computed properties
         \end{enumerate}
     }
 \end{algorithm}
 
-\begin{figure}[b]
+\begin{figure}
   \centering
   \includegraphics[width=3.4in]{images/initial_us_map}
   \caption{Initial map of the USA with data point particles. Note the slider at
@@ -219,7 +234,10 @@ projection that would have potential as an effective virtual reality view.
 Up until this point, I had been combining d3.js and three.js and used an awkward
 bridge between them to reliably communicate the projection and viewport
 information needed to render both a map and a particle system on the same
-screen (see Algorithm 2). I realized that if I switched entirely to a spherical
+screen (see Algorithm 2). This algorithm required constant data processing, so
+it acted as a bottleneck for my entire application. In order to render my
+location history, I had to process through the data and discard all but 1 out of
+every 100 data points. I realized that if I switched entirely to a spherical
 projection, I could render the map using three.js rather than with d3.js,
 removing the need to operate through that additional level of abstraction.
 
@@ -241,14 +259,57 @@ removing the need to operate through that additional level of abstraction.
                 \item Update {[}x, y, z{]} vertex position for this particle
             \end{enumerate}
         }
-        Render all particles using a custom vertex and fragment \\ shader
+        Render all particles using the technique in (Algorithm 1)
     }
 \end{algorithm}
 
-\subsection{Final Details}
+\subsection{Moving away from d3.js}
+
+I completely transitioned away from d3.js and rendered the Earth using a
+textured sphere (Figure 5). I used a diffuse, specular, and bump map from a free
+website. The bump map was roughly an elevation map of the world and the specular
+map was roughly a water coverage map. My new data point positioning algorithm
+using only three.js is outlined in Algorithm 3. With this new positioning,
+the bottleneck that used to exist was resolved, so I could now render those
+original 420,000 data points my location history file at 60fps.
+
+\RestyleAlgo{boxruled}
+\begin{algorithm}
+\DontPrintSemicolon
+\caption{Updated Data Point Positioning}
+    \KwData{radius}
+    At load time : \ForEach{data point} {
+        \begin{enumerate}
+            \item Create a particle in the particle system
+            \item Store latitude and longitude
+            \item Convert latitude and longitude to object-space [x, y, z]
+                \begin{enumerate}
+                    \item $phi = latitude$, $theta = longitude$
+                    \item $x = radius * cos(phi) * cos(theta)$
+                    \item $y = radius * sin(phi)$
+                    \item $z = radius * cos(phi) * sin(theta)$
+                \end{enumerate}
+        \end{enumerate}
+    }
+    At run time : \ForEach{frame} {
+        Render all particles using the technique in (Algorithm 1)
+    }
+\end{algorithm}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=3.0in]{images/threejs_sphere_earth}
+  \caption{Sphere and particles rendered entirely with three.js.}
+\end{figure}
+
+\subsection{Virtual Reality}
 
 
 \section{Feedback}
+
+\subsection{Follow Line}
+
+
 
 \section{Results}
 
