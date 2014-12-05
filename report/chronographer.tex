@@ -7,6 +7,8 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{amsmath}
+\usepackage{url}
+\usepackage{hyperref}
 
 \newcommand\blfootnote[1]{%
   \begingroup
@@ -35,8 +37,9 @@
 \begin{document}
 
 \teaser{
-  \includegraphics[height=180px]{images/chronographer.png}
-  \caption{Visualizing volcanic eruptions.}
+    \includegraphics[height=180px]{images/chronographer.png}
+    \captionsetup{hypcap=false}
+    \caption{Visualizing volcanic eruptions.}
 }
 
 \maketitle
@@ -136,8 +139,12 @@ worlds such as Second Life and the Unity3D game engine as data visualization
 platforms.
 
 
-
 \section{Development}
+
+\subsection{Data}
+
+The data returned through Google Takeout is in JSON form with a simple array
+of [latitude, longitude, timestamp] triples.
 
 \subsection{Initial Ideas}
 
@@ -155,9 +162,88 @@ using additive or alpha blending to show general regions where points were
 focused. As the visualization time changed, data points would fade in and out.
 I used a traditional slider to control the visualization time, which could be
 set to play automatically or could be manually controlled via mouse or touch.
+This initial design can be seen in Figure 2.
+
+I used a particle system to represent data points, with each data point having
+a single particle in the particle system to represent it. These particles would
+change their display properties based on the difference between the
+visualization time and their data point's time through computations in a set
+of custom vertex and fragment shaders (see Algorithm 1).
+
+\RestyleAlgo{boxruled}
+\begin{algorithm}
+\DontPrintSemicolon
+\caption{Data Point Rendering}
+    \KwData{$visualizationTime$, $minTime$, $maxTime$, $highlightPercent$}
+    \ForEach{particle} {
+        \KwData{$particleTime$, $latitude$, $longitude$}
+        \begin{enumerate}
+            \item Position in object space based on $latitude$ and \\
+                $longitude$
+            \item Compute $visPercent$ as the percentage that
+                $visualizationTime$ is from $minTime$ to $maxTime$
+            \item Compute $particlePercent$ as the percentage that
+                $particleTIme$ is from $minTime$ to $maxTime$
+            \item Compute $percentDifference$ and scale by $highlightPercent$
+            \item Interpolate HSV color, size, and alpha using this scaled
+                percentage
+        \end{enumerate}
+    }
+\end{algorithm}
+
+\begin{figure}[b]
+  \centering
+  \includegraphics[width=3.4in]{images/initial_us_map}
+  \caption{Initial map of the USA with data point particles. Note the slider at
+           the bottom of the screen.}
+\end{figure}
 
 \subsection{First Extensions}
 
+After producing a working 2D implementation of my basic idea, I experimented
+with other projections (Figures 3 and 4), eventually aiming for a spherical
+projection that would have potential as an effective virtual reality view.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=3.0in]{images/mercator_projection_with_particles}
+  \caption{Mercator projection with data point particles.}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=3.0in]{images/orthographic_projection_with_particles}
+  \caption{Orthographic projection with data point particles.}
+\end{figure}
+
+Up until this point, I had been combining d3.js and three.js and used an awkward
+bridge between them to reliably communicate the projection and viewport
+information needed to render both a map and a particle system on the same
+screen (see Algorithm 2). I realized that if I switched entirely to a spherical
+projection, I could render the map using three.js rather than with d3.js,
+removing the need to operate through that additional level of abstraction.
+
+\RestyleAlgo{boxruled}
+\begin{algorithm}
+\DontPrintSemicolon
+\caption{Initial Data Point Positioning}
+    At load time : \ForEach{data point} {
+        Create a particle in the particle system, storing latitude and longitude
+    }
+    At run time : \ForEach{frame} {
+        \ForEach{particle} {
+            \begin{enumerate}
+                \item Convert from latitude/longitude to screen-space \\
+                    {[}x, y{]} using d3.geo.projection
+                \item Convert from screen-space {[}x, y{]} to three.js \\
+                    world-space {[}x, y, z{]} using \\
+                    THREE.Projector.unprojectVector
+                \item Update {[}x, y, z{]} vertex position for this particle
+            \end{enumerate}
+        }
+        Render all particles using a custom vertex and fragment \\ shader
+    }
+\end{algorithm}
 
 \subsection{Final Details}
 
