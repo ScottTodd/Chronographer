@@ -9,14 +9,14 @@ var Earth = function(radius) {
 
     earthMaterial.bumpMap = this.loadTexture('earth_bump_4k.jpg');
     earthMaterial.bumpScale = radius / 2.0;
-    earthMaterial.specularMap = this.loadTexture('earth_specular_4k.jpg');
+    earthMaterial.specularMap = this.loadTexture('earth_specular_2k.jpg');
     earthMaterial.specular = new THREE.Color(0x3A3A3A);
 
     this.earthMesh = new THREE.Mesh(earthGeometry, earthMaterial);
     this.earthMesh.rotation.y = Math.PI;
 
     var boundariesMaterial = new THREE.MeshBasicMaterial({
-      map: this.loadTexture('earth_boundaries_4k.png'),
+      map: this.loadTexture('earth_boundaries_2k.png'),
       transparent: true,
       opacity: 0.5
     });
