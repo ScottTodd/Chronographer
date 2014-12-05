@@ -2,7 +2,7 @@
 
 var ChronoControls = function(chronographer, container, opts) {
     this.chronographer = chronographer;
-    this.totalPlayTime = 10.0;
+    this.totalPlayTime = (opts && opts.playTime) || 10.0;
     this.paused = true;
     this.loop = true;
     this.dateFormat = (opts && opts.dateFormat) || 'string';
