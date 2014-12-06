@@ -26,7 +26,7 @@
 \TOGdataURL{}
 \TOGcodeURL{}
 
-\title{Chronographer - Location History Visualization}
+\title{Chronographer - A Location History Visualization Tool}
 
 
 \author{Scott Todd\thanks{email: todds@rpi.edu}}
@@ -39,7 +39,7 @@
 \teaser{
     \includegraphics[height=180px]{images/chronographer.png}
     \captionsetup{hypcap=false}
-    \caption{Visualizing volcanic eruptions.}
+    \caption{Visualizing volcanic eruptions}
 }
 
 \maketitle
@@ -91,10 +91,10 @@ over the time axis differently.
 Virtual reality devices such as the Oculus Rift and Sony's Project Morpheus are
 currently in active development. Screen, positional tracking, and rendering
 technologies have advanced to the point where immersive virtual reality is
-nearly within reach for consumer-grade projects. The Google Cardboard takes this
-a step further and leverages current generation smart phones, which are packed
-with sensors and high resolution screens already, to deliver an affordable
-virtual reality solution that hobbyists and consumers can easily use.
+nearly within reach for consumer-grade projects. The Google Cardboard takes a
+step in a different direction and leverages current generation smart phones,
+which are packed with sensors and high resolution screens already, to deliver an
+affordable virtual reality solution that hobbyists and consumers can easily use.
 
 Virtual reality for web browsers is a recent extension of these new
 technologies, so support and stability are both limited. The device orientation
@@ -131,7 +131,8 @@ Location History using an interactive heatmap
 time values are compressed onto a single map which features zoom and pan
 controls.
 
-This blog post \cite{VR:BigData} argues that good data visualization tools
+A blog post titled ``Virtual Reality brings Big Data visualization to life''
+by Mike Wheatley \cite{VR:BigData} argues that good data visualization tools
 should consider human visual perception and give insight into the unknown, not
 the already-understood. It explains how DARPA used the Oculus Rift to visualize
 three-dimensional network simulations and how engineers at Caltech used virtual
@@ -139,24 +140,23 @@ worlds such as Second Life and the Unity3D game engine as data visualization
 platforms.
 
 
-\section{Development}
-
-\subsection{Data}
+\section{Datasets and Data Collection}
 
 I used my personal location history data collected via Google Takeout, which is
 formatted as a simple JSON file containing an array of [latitude, longitude,
 timestamp] triples. This data file is 76 MB in size and contains nearly 420,000
 data points collected between 2013 and 2014.
 
-I also visualized the history of
-volcanic eruptions using data from the NOAA Significant Volcanic Eruptions
-Database. I coverted this data from a Microsoft Excel file into the same JSON
-format that Google Takeout uses. While this data set contains eruptions between
-the year -4000 and the present, I found that the older data was too sparse and
-made navigation via the time slider difficult, so I extracted only eruptions
-between 1800 and the present.
+I also visualized the history of volcanic eruptions using data from the NOAA
+Significant Volcanic Eruptions Database. I coverted this data from a Microsoft
+Excel file into the same JSON format that Google Takeout uses. While this data
+set contains eruptions between the year -4000 and the present, I found that the
+older data was too sparse and made navigation via the time slider difficult, so
+I extracted only eruptions between 1800 and the present.
 
-\subsection{Initial Ideas}
+\section{Development}
+
+\subsection{First Ideas}
 
 I originally planned to build a two dimensional map interface that would blend
 a set of data points across time ranges together. At this point, I was inspired
@@ -198,7 +198,7 @@ camera-facing) particles (see Algorithm 1).
             \item Compute $visPercent$ as the percentage that
                 $visualizationTime$ is from $minTime$ to $maxTime$
             \item Compute $particlePercent$ as the percentage that
-                $particleTIme$ is from $minTime$ to $maxTime$
+                $particleTime$ is from $minTime$ to $maxTime$
             \item Compute $percentDifference$ and scale by $highlightPercent$
             \item Interpolate HSV color, size, and alpha using this scaled
                 percentage
@@ -320,7 +320,10 @@ My Samsung Galaxy S4 phone has several known issues with its magnetometer
 Cardboard unreliable. Newer phones suffer less from these issues though, as
 these technologies become more well established. Additionally, web browsers are
 known to send laggy and noisy orientation information, which may be fixed in the
-future with WebVR and better hardware.
+future with WebVR and better hardware. On my phone, I was limited to a single
+axis of rotation (North to South) and some movements were plagued with jitter.
+On other devices, rotating the device to view south the Equator instead shifted
+to looking back up towards the North pole.
 
 I made use of a stereo rendering effect for three.js which does a screen-space
 transformation of each frame before sending it to the framebuffer, splitting it
@@ -395,16 +398,39 @@ and eventually dropped it from the location history dataset as well.
 
 \section{Limitations and Future Work}
 
-Limitations and future work.
+There are several outstanding issues with the device orientation API, current
+hardware, and my implementation on top of these technologies. As WebVR becomes
+further developed, I would like to transition over to that.
 
+I would also like to integrate map data from a provider like Google Maps or
+OpenStreetMap, since my current implementation handles zooming very poorly and
+provides little cultural context to the raw geography present in the Earth
+textures used.
+
+I did not test on an Oculus Rift or any virtual reality device other than the
+Google Cardboard, so that is an obvious path for future work to ensure
+compatibility. Perhaps the larger display and more precise motion tracking on
+the Oculus Rift would solve several of my issues there.
+
+Now that I have a working virtual reality globe capable of displaying geographic
+time series data, I feel that I should re-evaluate the usefulness of this
+interface and investigate if there are other interactions relating to this setup
+which would aid in data analysis. Future visualization design could either
+center on overview information and trends or on specific detail focus. I think
+that virtual reality will eventually be great for specific detail focus and
+exploration, but trend viewing might be easier to reach at the moment.
 
 \section{Conclusions}
 
-Conclusions.
+I have built an interactive virtual reality visualization of geographic
+location history data and applied this visualization to both my personal
+location history data as well as volcanic eruption history data.
 
-\section{Acknowledgments}
-
-Acknowledgments.
+While the interface and interaction were both interesting, details were
+difficult to notice and several technical limitations held the project back.
+Shifting from using both d3.js and three.js to using only three.js was a great
+decision and solved a number of implementation challenges. There is hope that
+WebVR will smooth out the remaining device orientation issues.
 
 \bibliographystyle{acmsiggraph}
 \bibliography{chronographer}
