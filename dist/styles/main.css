@@ -123,18 +123,3 @@ body {
 "names": [],
 "file": "main.css"
 }
-#cgr-worldMap {
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  fill: none;
-  z-index: -1;
-}
-
-{
-"version": 3,
-"mappings": "AAAA,aAAc;EACV,QAAQ,EAAE,KAAK;EACf,IAAI,EAAE,GAAG;EACT,GAAG,EAAE,GAAG;EACR,IAAI,EAAE,IAAI;EACV,OAAO,EAAE,EAAE",
-"sources": ["../worldmap.scss"],
-"names": [],
-"file": "worldmap.css"
-}
