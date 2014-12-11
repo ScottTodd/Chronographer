@@ -14,12 +14,17 @@ DeviceOrbitControls.prototype.setOrientation = function(event) {
     if (!this.enabled) { return; }
 
     var deg2rad = Math.PI / 180.0;
-    var alpha = -((event.alpha) * deg2rad);
-    var gamma =  ((event.gamma + 90) * deg2rad);
+    var theta = -(event.alpha * deg2rad);
+    var phi = 0;
+    if (event.gamma < 0) {
+        phi = (event.gamma + 90) * deg2rad;
+    } else {
+        phi = (event.gamma - 90) * deg2rad;
+    }
 
-    var x = this.radius * Math.cos(gamma) * Math.cos(alpha);
-    var y = this.radius * Math.sin(gamma);
-    var z = this.radius * Math.cos(gamma) * Math.sin(alpha);
+    var x = this.radius * Math.cos(phi) * Math.cos(theta);
+    var y = this.radius * Math.sin(phi);
+    var z = this.radius * Math.cos(phi) * Math.sin(theta);
 
     this.camera.position.set(x, y, z);
     this.camera.lookAt(new THREE.Vector3(0.0, 0.0, 0.0));
