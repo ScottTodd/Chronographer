@@ -1,0 +1,125 @@
+.chrono-controls-outer {
+  /* anchor to the bottom */
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  margin: 0px;
+  height: 80px;
+}
+
+.chrono-controls-inner {
+  position: relative;
+  width: 60%;
+  margin: auto;
+}
+
+.chrono-center-horizontal {
+  margin-left: auto;
+  margin-right: auto;
+  left: 0px;
+  right: 0px;
+}
+
+.chrono-button {
+  width: 120px;
+  background-color: #4E4E4E;
+  border: 2px solid;
+  border-color: #191919;
+  color: #9B9B9B;
+  font-size: 20px;
+  position: relative;
+  margin: 4px;
+}
+
+#chrono-timeInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #4E4E4E;
+  border: 2px solid;
+  border-color: #191919;
+  width: 80%;
+  position: absolute;
+  height: auto;
+  bottom: 0px;
+}
+
+#chrono-timeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #9B9B9B;
+  border: 2px solid;
+  border-color: #191919;
+  width: 10px;
+  height: 30px;
+}
+
+.chrono-date {
+  position: absolute;
+  display: inline-block;
+  color: #E1D6C1;
+  font-size: 34px;
+  width: 10%;
+}
+
+.chrono-vr-date {
+  margin-top: 10%;
+}
+
+#chrono-vr-controls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-left: -50%;
+  display: none;
+  pointer-events: none;
+}
+
+#chrono-vr-dateBox-1 {
+  margin-left: 22%;
+}
+
+#chrono-vr-dateBox-2 {
+  margin-left: 72%;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,sBAAuB;;EAEnB,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;EACX,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,GAAG;EACX,MAAM,EAAE,IAAI;;;AAGhB,sBAAuB;EACnB,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,IAAI;;;AAGhB,yBAA0B;EACtB,WAAW,EAAE,IAAI;EACjB,YAAY,EAAE,IAAI;EAClB,IAAI,EAAE,GAAG;EACT,KAAK,EAAE,GAAG;;;AAGd,cAAe;EACX,KAAK,EAAE,KAAK;EACZ,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EACrB,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,IAAI;EACf,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,GAAG;;;AAGf,iBAAkB;EACd,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EAErB,KAAK,EAAE,GAAG;EACV,QAAQ,EAAE,QAAQ;EAClB,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,GAAG;;;AAGf,uCAAwC;EACpC,kBAAkB,EAAE,IAAI;EACrB,eAAe,EAAE,IAAI;EAChB,UAAU,EAAE,IAAI;EACxB,gBAAgB,EAAE,OAAO;EACzB,MAAM,EAAE,SAAS;EACjB,YAAY,EAAE,OAAO;EAErB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;;;AAGhB,YAAa;EACT,QAAQ,EAAE,QAAQ;EAClB,OAAO,EAAE,YAAY;EACrB,KAAK,EAAE,OAAO;EACd,SAAS,EAAE,IAAI;EACf,KAAK,EAAE,GAAG;;;AAGd,eAAgB;EACZ,UAAU,EAAE,GAAG;;;AAGnB,mBAAoB;EAChB,QAAQ,EAAE,QAAQ;EAClB,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,IAAI;EACZ,WAAW,EAAE,IAAI;EACjB,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,IAAI;;;AAGxB,oBAAqB;EACjB,WAAW,EAAE,GAAG;;;AAGpB,oBAAqB;EACjB,WAAW,EAAE,GAAG",
+"sources": ["../chronocontrols.scss"],
+"names": [],
+"file": "chronocontrols.css"
+}
+#cgr-chronoData {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,eAAgB;EACZ,QAAQ,EAAE,KAAK;EACf,IAAI,EAAE,GAAG;EACT,GAAG,EAAE,GAAG",
+"sources": ["../chronodata.scss"],
+"names": [],
+"file": "chronodata.css"
+}
+html, body {
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #222222;
+  background-image: url("../../third_party/images/cartographer.png");
+  color: #DDDDDD;
+  margin: 0;
+}
+
+{
+"version": 3,
+"mappings": "AAAA,UAAW;EACT,UAAU,EAAE,IAAI;EAChB,MAAM,EAAE,IAAI;;;AAGd,IAAK;EACD,gBAAgB,EAAE,OAAO;EACzB,gBAAgB,EAAE,gDAAgD;EAClE,KAAK,EAAE,OAAO;EACd,MAAM,EAAE,CAAC",
+"sources": ["../main.scss"],
+"names": [],
+"file": "main.css"
+}

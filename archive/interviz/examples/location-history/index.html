@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Chronographer - Location History Example</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+  <link rel='stylesheet' type='text/css' href='../../dist/styles/main.css'>
+  <link rel='import' href='../../dist/html/chronographer.html'>
+
+  <script src='../../third_party/three.min.js'></script>
+  <script src='../../third_party/stats.min.js'></script>
+  <script src='../../third_party/OrbitControls.js'></script>
+  <script src='../../third_party/detector.js'></script>
+  <script src='../../third_party/StereoEffect.js'></script>
+  <script src='../../third_party/OculusRiftEffect.js'></script>
+  <script src='../../dist/scripts/main.js'></script>
+
+  <style>
+    #upload-form {
+      position: relative;
+      margin: auto;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24pt;
+    }
+
+    #upload-form a {
+      color: #9A9A9A;
+    }
+
+    #upload-form a:visited {
+      color: #9A9A9A;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<form action='javascript:upload()' id='upload-form'>
+  <p>
+    Grab your LocationHistory.json file from <a href='https://www.google.com/settings/takeout'>Google Takeout</a>.
+  </p>
+
+  Select a file: <input type='file' name='data' id='file-upload'>
+  <input type='submit'>
+</form>
+
+<div id='container'></div>
+
+<script>
+  var chronographer;
+  var stats;
+
+  function upload() {
+    var file = document.getElementById('file-upload').files[0];
+
+    var reader = new FileReader();
+
+    reader.onload = function() {
+      var content = JSON.parse(this.result);
+
+      var uploadForm = document.getElementById('upload-form');
+      uploadForm.style.display = 'none';
+
+      init(content);
+      animate();
+    }
+
+    reader.readAsText(file);
+  };
+
+  function init(dataJSON) {
+    var opts = {
+      dataJSON: dataJSON,
+      percentHighlightRange: 0.002,
+      minAlpha: 1.0,
+      maxAlpha: 1.0,
+      minColor: new THREE.Color(0x7EC5D1),
+      maxColor: new THREE.Color(0xE32402),
+      minSize: 4.0,
+      maxSize: 24.0,
+      playTime: 40.0,
+      dateFormat: 'timestamp'
+    };
+
+    var container = document.getElementById('container');
+    chronographer = new Chronographer(container, opts);
+
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // container.appendChild(stats.domElement);
+  };
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (stats) { stats.update(); }
+    chronographer.update();
+  };
+</script>
+
+</body>
+</html>

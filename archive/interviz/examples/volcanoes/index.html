@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <title>Chronographer - Volcanoes Example</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+  <link rel='stylesheet' type='text/css' href='../../dist/styles/main.css'>
+  <link rel='import' href='../../dist/html/chronographer.html'>
+
+  <script src='../../third_party/three.min.js'></script>
+  <script src='../../third_party/stats.min.js'></script>
+  <script src='../../third_party/OrbitControls.js'></script>
+  <script src='../../third_party/detector.js'></script>
+  <script src='../../third_party/StereoEffect.js'></script>
+  <script src='../../third_party/OculusRiftEffect.js'></script>
+  <script src='../../dist/scripts/main.js'></script>
+</head>
+
+<body>
+
+<div id='container'></div>
+
+<script>
+  var chronographer;
+  var stats;
+
+  window.onload = function() {
+    init();
+    animate();
+  };
+
+  function init() {
+    var opts = {
+      dataURL: 'data/volcanoes_1800-2014.json',
+      percentHighlightRange: 0.10,
+      minAlpha: 1.0,
+      maxAlpha: 1.0,
+      minColor: new THREE.Color(0x888888),
+      maxColor: new THREE.Color(0xFB130D),
+      minSize: 12.0,
+      maxSize: 32.0,
+      playTime: 40.0,
+      dateFormat: 'string'
+    };
+
+    var container = document.getElementById('container');
+    chronographer = new Chronographer(container, opts);
+
+    // stats = new Stats();
+    // stats.domElement.style.position = 'absolute';
+    // stats.domElement.style.top = '0px';
+    // container.appendChild(stats.domElement);
+  };
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (stats) { stats.update(); }
+    chronographer.update();
+  };
+</script>
+
+</body>
+</html>
