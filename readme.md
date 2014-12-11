@@ -10,9 +10,9 @@ Tested on Google Chrome version 39 on Windows 7 and Android 4.4.2 on a Samsung G
 * @theopolisme's [location-history-visualizer](https://github.com/theopolisme/location-history-visualizer)
 * [Google Cardboard](https://developers.google.com/cardboard/)
 
-### Known Issues ###
-* Cannot rotate south of the Equator in VR mode.
-* Code and assets needs reorganization to allow for extension.
+### Project History ###
+
+This project started as my final project for a course on [Interactive Visualization](http://www.cs.rpi.edu/~cutler/classes/visualization/F14/index.php) at RPI.
 
 -------------------------
 
