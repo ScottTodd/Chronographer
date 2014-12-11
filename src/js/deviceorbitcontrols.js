@@ -14,11 +14,14 @@ DeviceOrbitControls.prototype.setOrientation = function(event) {
     if (!this.enabled) { return; }
 
     var deg2rad = Math.PI / 180.0;
-    var theta = -(event.alpha * deg2rad);
+
+    var theta = 0;
     var phi = 0;
     if (event.gamma < 0) {
+        theta = (event.alpha + 180) * deg2rad;
         phi = (event.gamma + 90) * deg2rad;
     } else {
+        theta = event.alpha * deg2rad;
         phi = (event.gamma - 90) * deg2rad;
     }
 
