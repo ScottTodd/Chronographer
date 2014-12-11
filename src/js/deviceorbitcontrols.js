@@ -18,10 +18,10 @@ DeviceOrbitControls.prototype.setOrientation = function(event) {
     var theta = 0;
     var phi = 0;
     if (event.gamma < 0) {
-        theta = (event.alpha + 180) * deg2rad;
+        theta = -(event.alpha + 180) * deg2rad;
         phi = (event.gamma + 90) * deg2rad;
     } else {
-        theta = event.alpha * deg2rad;
+        theta = -event.alpha * deg2rad;
         phi = (event.gamma - 90) * deg2rad;
     }
 
