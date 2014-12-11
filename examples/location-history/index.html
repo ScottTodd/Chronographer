@@ -16,11 +16,11 @@
   <script src='../../dist/scripts/main.js'></script>
 
   <style>
-    #upload-form {
+    #upload-container {
       position: relative;
       margin: auto;
       text-align: center;
-      top: 50%;
+      top: 45%;
       transform: translateY(-50%);
       font-size: 24pt;
     }
@@ -32,31 +32,50 @@
     #upload-form a:visited {
       color: #9A9A9A;
     }
+
+    #progress-indicator-container {
+      height: 60px;
+      margin: 20px;
+    }
   </style>
 
 </head>
 
 <body>
 
-<form action='javascript:upload()' id='upload-form'>
-  <p>
-    Grab your LocationHistory.json file from <a href='https://www.google.com/settings/takeout'>Google Takeout</a>.
-  </p>
+<div id='upload-container'>
+  <form action='javascript:upload()' id='upload-form'>
+    <p>
+      Grab your LocationHistory.json file from <a href='https://www.google.com/settings/takeout'>Google Takeout</a>.
+    </p>
 
-  Select a file: <input type='file' name='data' id='file-upload'>
-  <input type='submit'>
-</form>
+
+    Select a file: <input type='file' name='data' id='file-upload'>
+    <input type='submit'>
+
+  </form>
+
+  <div id='progress-indicator-container'>
+    <div id='progress-indicator' class='spinner' style='display:none;'>
+      <div class='bounce1'></div>
+      <div class='bounce2'></div>
+      <div class='bounce3'></div>
+    </div>
+  </div>
+</div>
 
 <div id='container'></div>
 
 <script>
   var chronographer;
   var stats;
+  var progressIndicator = document.getElementById('progress-indicator');
 
   function upload() {
     var file = document.getElementById('file-upload').files[0];
 
     var reader = new FileReader();
+    progressIndicator.style.display = 'block';
 
     reader.onload = function() {
       var content = JSON.parse(this.result);
